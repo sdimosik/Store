@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Recycler.Default" parent="Widget.AppCompat.ListView">
+        <item name="android:overScrollMode">never</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="Recycler.Linear" parent="Recycler.Default">
+        <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>
+    </style>
+
+    <style name="Recycler.StaggeredGrid" parent="Recycler.Default">
+        <item name="layoutManager">androidx.recyclerview.widget.StaggeredGridLayoutManager</item>
+    </style>
+
+    <style name="Recycler.Linear.Horizontal" parent="Recycler.Linear">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="Recycler.Linear.Vertical" parent="Recycler.Linear">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+</resources>
