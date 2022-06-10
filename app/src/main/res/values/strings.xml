@@ -5,4 +5,5 @@
     <string name="base_error">Oops...something went wrong :(</string>
     <string name="fragment_products">fragment_products</string>
     <string name="pdp_fragment">pdp_fragment</string>
+    <string name="fragment_add_product">fragment_add_product</string>
 </resources>

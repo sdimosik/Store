@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_fragment_products_to_PDPFragment"
             app:destination="@id/PDPFragment" />
+        <action
+            android:id="@+id/action_fragment_products_to_AddProductFragment"
+            app:destination="@id/AddProductFragment" />
     </fragment>
 
     <fragment
@@ -22,6 +25,16 @@
         tools:layout="@layout/pdp_fragment">
         <action
             android:id="@+id/action_PDPFragment_to_fragment_products"
+            app:destination="@id/fragment_products" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddProductFragment"
+        android:name="ru.ozon.route256.workshop1.presentation.view.AddProductFragment"
+        android:label="@string/fragment_add_product"
+        tools:layout="@layout/fragment_add_product">
+        <action
+            android:id="@+id/action_AddProductFragment_to_fragment_products"
             app:destination="@id/fragment_products" />
     </fragment>
 

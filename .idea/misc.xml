@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidProjects/homework-2/app/src/main/res/layout/activity_main.xml" value="0.20606884057971014" />
+        <entry key="..\:/AndroidProjects/homework-2/app/src/main/res/layout/fragment_add_product.xml" value="0.2994791666666667" />
         <entry key="..\:/AndroidProjects/homework-2/app/src/main/res/layout/fragment_products.xml" value="0.14375" />
+        <entry key="..\:/AndroidProjects/homework-2/app/src/main/res/layout/pdp_fragment.xml" value="0.14375" />
         <entry key="..\:/AndroidProjects/homework-2/app/src/main/res/layout/product_list_item.xml" value="0.4466666666666667" />
       </map>
     </option>

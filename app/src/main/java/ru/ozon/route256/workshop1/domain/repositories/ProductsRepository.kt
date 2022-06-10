@@ -8,4 +8,5 @@ interface ProductsRepository {
     suspend fun getProducts(): List<ProductInListDomain>
 
     suspend fun getProductById(guid: String): ProductDomain?
+    fun addProduct(productDomain: ProductDomain)
 }

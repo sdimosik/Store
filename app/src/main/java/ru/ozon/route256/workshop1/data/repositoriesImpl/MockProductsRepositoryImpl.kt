@@ -38,4 +38,8 @@ class MockProductsRepositoryImpl(
             .find { it.guid == guid }
             ?.toDomain()
     }
+
+    override fun addProduct(productDomain: ProductDomain) {
+
+    }
 }

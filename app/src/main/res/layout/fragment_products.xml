@@ -5,11 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@android:color/transparent"
+        android:backgroundTint="@color/purple_200"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/white"
+        android:contentDescription="@string/fragment_add_product" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/frg_products__recycler"
         style="@style/Recycler.Linear.Vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="67dp"
         tools:listitem="@layout/product_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

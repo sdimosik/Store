@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.setFragmentResultListener
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import ru.ozon.route256.workshop1.R
@@ -27,9 +28,9 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
 
     val binding by viewBinding(FragmentProductsBinding::bind)
 
-    private val viewModel: ProductsViewModel by viewModelCreator {
-        ProductsViewModel(ServiceLocatorDomain.provideProductsInteractor())
-    }
+        private val viewModel: ProductsViewModel by viewModelCreator {
+            ProductsViewModel(ServiceLocatorDomain.provideProductsInteractor())
+        }
 
     private val productsAdapter by lazy {
         ProductsAdapter(
@@ -60,8 +61,34 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.frgProductsRecycler.adapter = productsAdapter
+        with(binding) {
+            frgProductsRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    // if the recycler view is scrolled
+                    // above hide the FAB
+                    if (dy > 10 && btnAddProduct.isShown) {
+                        btnAddProduct.hide()
+                    }
+                    // if the recycler view is
+                    // scrolled above show the FAB
+                    if (dy < -10 && !btnAddProduct.isShown) {
+                        btnAddProduct.show()
+                    }
+                    // of the recycler view is at the first
+                    // item always show the FAB
+                    if (!recyclerView.canScrollVertically(-1)) {
+                        btnAddProduct.show()
+                    }
+                }
+            })
 
+            frgProductsRecycler.adapter = productsAdapter
+
+            btnAddProduct.setOnClickListener {
+                findNavController().navigate(R.id.action_fragment_products_to_AddProductFragment)
+            }
+        }
         viewModel.action.observe(viewLifecycleOwner) { event ->
             when (event.getContentIfNotHandled()) {
                 is BaseViewModel.Action.ShowToast -> {
