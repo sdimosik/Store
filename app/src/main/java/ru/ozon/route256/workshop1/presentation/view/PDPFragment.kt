@@ -20,14 +20,6 @@ class PDPFragment() : Fragment(R.layout.pdp_fragment) {
 
     companion object {
         const val PRODUCT_ID = "ru.ozon.route256.workshop1.presentation.view.productId"
-
-        fun newInstance(guide: String): PDPFragment {
-            val myFragment = PDPFragment()
-            val args = Bundle()
-            args.putString(PRODUCT_ID, guide)
-            myFragment.arguments = args
-            return myFragment
-        }
     }
 
     private var currentId: String? = null

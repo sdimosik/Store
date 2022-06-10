@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/fragment_products">
+
+    <fragment
+        android:id="@+id/fragment_products"
+        android:name="ru.ozon.route256.workshop1.presentation.view.ProductsFragment"
+        android:label="@string/fragment_products"
+        tools:layout="@layout/fragment_products">
+        <action
+            android:id="@+id/action_fragment_products_to_PDPFragment"
+            app:destination="@id/PDPFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PDPFragment"
+        android:name="ru.ozon.route256.workshop1.presentation.view.PDPFragment"
+        android:label="@string/pdp_fragment"
+        tools:layout="@layout/pdp_fragment">
+        <action
+            android:id="@+id/action_PDPFragment_to_fragment_products"
+            app:destination="@id/fragment_products" />
+    </fragment>
+
+</navigation>
