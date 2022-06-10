@@ -1,7 +1,10 @@
 package ru.ozon.route256.workshop1.data.repositoriesImpl
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.ozon.route256.workshop1.data.mapper.toDomain
 import ru.ozon.route256.workshop1.data.network.ApiService
+import ru.ozon.route256.workshop1.domain.mapper.toProductInListData
 import ru.ozon.route256.workshop1.domain.model.ProductDomain
 import ru.ozon.route256.workshop1.domain.model.ProductInListDomain
 import ru.ozon.route256.workshop1.domain.repositories.ProductsRepository
@@ -10,36 +13,79 @@ class MockProductsRepositoryImpl(
     private val apiService: ApiService
 ) : ProductsRepository {
 
-    override suspend fun getProducts(): List<ProductInListDomain> {
-        val response = apiService.getProductsInList()
+    companion object {
 
-        if (!response.isSuccessful)
-            return emptyList()
+        // cache moment
+        private var isFirstCacheList = true
+        private var cacheList = mutableListOf<ProductInListDomain>()
 
-        if (response.body() == null)
-            return emptyList()
+        private val isFirstCacheDetailProduct = true
+        private var cacheDetailProduct = mutableListOf<ProductDomain>()
+    }
 
-        return response.body()!!.map {
-            it.toDomain()
+    override suspend fun getProducts(): List<ProductInListDomain> = withContext(Dispatchers.IO) {
+        if (isFirstCacheList) {
+            val response = apiService.getProductsInList()
+
+            if (!response.isSuccessful)
+                return@withContext cacheList
+
+            if (response.body() == null)
+                return@withContext cacheList
+
+            cacheList.addAll(
+                response.body()!!.map {
+                    it.toDomain()
+                }.toMutableList()
+            )
+
+            isFirstCacheList = false
+            return@withContext cacheList
+        } else {
+            return@withContext cacheList
         }
     }
 
-    override suspend fun getProductById(guid: String): ProductDomain? {
+    override suspend fun getProductById(guid: String): ProductDomain? =
+        withContext(Dispatchers.IO) {
 
-        val response = apiService.getProducts()
+            if (isFirstCacheDetailProduct) {
+                val response = apiService.getProducts()
 
-        if (!response.isSuccessful)
-            return null
+                if (!response.isSuccessful)
+                    return@withContext null
 
-        if (response.body() == null)
-            return null
+                if (response.body() == null)
+                    return@withContext null
 
-        return response.body()!!
-            .find { it.guid == guid }
-            ?.toDomain()
+                cacheDetailProduct.addAll(response.body()!!.map {
+                    it.toDomain()
+                }.toMutableList())
+
+                return@withContext cacheDetailProduct
+                    .find { it.guid == guid }
+
+            } else {
+                return@withContext cacheDetailProduct
+                    .find { it.guid == guid }
+            }
+        }
+
+    override suspend fun addProduct(productDomain: ProductDomain) {
+        withContext(Dispatchers.IO){
+            cacheDetailProduct.add(productDomain)
+            cacheList.add(productDomain.toProductInListData())
+        }
     }
 
-    override fun addProduct(productDomain: ProductDomain) {
-
+    override suspend fun addCountView(id: String?) {
+        withContext(Dispatchers.IO){
+            cacheList.mapIndexed { _, productInListUI ->
+                if (productInListUI.guid == id) {
+                    productInListUI.countView += 1
+                    return@mapIndexed
+                }
+            }
+        }
     }
 }

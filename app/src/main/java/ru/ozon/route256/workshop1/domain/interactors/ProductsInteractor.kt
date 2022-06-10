@@ -10,5 +10,6 @@ interface ProductsInteractor {
 
     suspend fun getProductById(guid: String): ProductUI?
 
-    fun addProduct(productDomain: ProductDomain)
+    suspend fun addProduct(productDomain: ProductDomain)
+    suspend fun addCountView(id: String?)
 }

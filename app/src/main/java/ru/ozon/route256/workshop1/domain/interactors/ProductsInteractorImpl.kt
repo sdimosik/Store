@@ -19,7 +19,11 @@ class ProductsInteractorImpl(
         return rep.getProductById(guid)?.toUI()
     }
 
-    override fun addProduct(productDomain: ProductDomain) {
+    override suspend fun addProduct(productDomain: ProductDomain) {
         return rep.addProduct(productDomain)
+    }
+
+    override suspend fun addCountView(id: String?) {
+        rep.addCountView(id)
     }
 }

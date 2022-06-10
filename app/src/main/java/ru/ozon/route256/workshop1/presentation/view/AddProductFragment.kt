@@ -28,21 +28,23 @@ class AddProductFragment(
             addBtn.setOnClickListener {
 
                 val newProduct = ProductUI(
-                    guid = guidET.toString(),
-                    name = nameET.toString(),
-                    price = priceET.toString(),
-                    description = descriptionET.toString(),
+                    guid = guidET.text.toString(),
+                    name = nameET.text.toString(),
+                    price = priceET.text.toString(),
+                    description = descriptionET.text.toString(),
                     rating = rating.rating.toDouble(),
                     isFavorite = isFavoriteSwitch.isActivated,
                     isInCart = isInCartSwitch.isActivated,
-                    images = mutableListOf(imagesUrlET.toString()),
-                    weight = weightET.toString().toDouble(),
-                    count = countET.toString().toInt(),
-                    availableCount = availableCount.toString().toInt(),
+                    images = mutableListOf(imagesUrlET.text.toString()),
+                    weight = weightET.text.toString().toDoubleOrNull(),
+                    count = countET.text.toString().toIntOrNull(),
+                    availableCount = availableCount.text.toString().toIntOrNull(),
                     additionalParams = hashMapOf()
                 )
 
                 viewModel.addProduct(newProduct)
+
+                requireActivity().onBackPressed()
             }
         }
     }

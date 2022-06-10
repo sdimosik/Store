@@ -8,4 +8,5 @@ data class ProductInListDomain(
     val rating: Double,
     val isFavorite: Boolean,
     val isInCart: Boolean,
+    var countView: Int = 0
 )

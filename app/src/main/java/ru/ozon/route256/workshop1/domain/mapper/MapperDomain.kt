@@ -1,7 +1,5 @@
 package ru.ozon.route256.workshop1.domain.mapper
 
-import ProductData
-import ru.ozon.route256.workshop1.data.model.ProductInListData
 import ru.ozon.route256.workshop1.domain.model.ProductDomain
 import ru.ozon.route256.workshop1.domain.model.ProductInListDomain
 import ru.ozon.route256.workshop1.presentation.model.ProductInListUI
@@ -23,5 +21,9 @@ fun ProductDomain.toUI(): ProductUI = ProductUI(
 )
 
 fun ProductInListDomain.toUI(): ProductInListUI = ProductInListUI(
-    guid, image, name, price, rating, isFavorite, isInCart
+    guid, image, name, price, rating, isFavorite, isInCart, countView
+)
+
+fun ProductDomain.toProductInListData(): ProductInListDomain = ProductInListDomain(
+    guid, if (images.isNotEmpty()) images[0] else "", name, price, rating, isFavorite, isInCart
 )

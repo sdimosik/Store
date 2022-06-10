@@ -15,11 +15,15 @@ class ProductsViewModel(
     private val _productLD = MutableLiveData<List<ProductInListUI>>()
     val productLD: LiveData<List<ProductInListUI>> = _productLD
 
-    init {
+    fun getProductsList() {
         viewModelScope.launch(handlerException) {
-            val list = productsInteractor.getProductsList()
-            val detail =
             _productLD.postValue(productsInteractor.getProductsList())
+        }
+    }
+
+    fun addCountView(id: String?) {
+        viewModelScope.launch(handlerException) {
+            productsInteractor.addCountView(id)
         }
     }
 }

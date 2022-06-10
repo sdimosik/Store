@@ -28,9 +28,9 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
 
     val binding by viewBinding(FragmentProductsBinding::bind)
 
-        private val viewModel: ProductsViewModel by viewModelCreator {
-            ProductsViewModel(ServiceLocatorDomain.provideProductsInteractor())
-        }
+    private val viewModel: ProductsViewModel by viewModelCreator {
+        ProductsViewModel(ServiceLocatorDomain.provideProductsInteractor())
+    }
 
     private val productsAdapter by lazy {
         ProductsAdapter(
@@ -47,14 +47,7 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
         super.onStart()
         setFragmentResultListener(REQUEST_ID_COUNT_ADD_KEY) { requestKey, bundle ->
             val id = bundle.getString(BUNDLE_ID_COUNT_ADD_KEY)
-            val list = productsAdapter.getList()
-            list.mapIndexed { _, productInListUI ->
-                if (productInListUI.guid == id) {
-                    productInListUI.countView += 1
-                    return@mapIndexed
-                }
-            }
-            productsAdapter.submitList(list)
+            viewModel.addCountView(id)
         }
     }
 
@@ -104,5 +97,10 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
         viewModel.productLD.observe(viewLifecycleOwner) {
             productsAdapter.submitList(it)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getProductsList()
     }
 }

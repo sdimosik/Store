@@ -21,5 +21,5 @@ fun ProductUI.toDomain(): ProductDomain = ProductDomain(
 )
 
 fun ProductInListUI.toUI(): ProductInListDomain = ProductInListDomain(
-    guid, image, name, price, rating, isFavorite, isInCart
+    guid, image, name, price, rating, isFavorite, isInCart, countView
 )
