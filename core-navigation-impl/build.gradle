@@ -1,0 +1,70 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+}
+
+apply from: "../dependencies.gradle"
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 31
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation project(":core-navigation-api")
+    implementation project(":core-network-api")
+    implementation project(":core-network-impl")
+    implementation project(":core-storage-api")
+    implementation project(":core-storage-impl")
+    implementation project(":feature-pdp-api")
+    implementation project(":feature-pdp-impl")
+    implementation project(":feature-products-api")
+    implementation project(":feature-products-impl")
+    implementation project(":feature-add-product-api")
+    implementation project(":feature-add-product-impl")
+
+    implementation coreKtx
+    implementation navigation.values()
+    implementation appCompat
+    implementation material
+    implementation constraintLayout
+    implementation viewModel
+    implementation lifecycle
+    implementation liveData
+    implementation glide
+    implementation dagger
+
+    kapt daggerCompiler
+
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
+}

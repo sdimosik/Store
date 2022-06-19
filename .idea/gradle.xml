@@ -7,10 +7,24 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="openjdk-18" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core-navigation-api" />
+            <option value="$PROJECT_DIR$/core-navigation-impl" />
+            <option value="$PROJECT_DIR$/core-network-api" />
+            <option value="$PROJECT_DIR$/core-network-impl" />
+            <option value="$PROJECT_DIR$/core-storage-api" />
+            <option value="$PROJECT_DIR$/core-storage-impl" />
+            <option value="$PROJECT_DIR$/core-utils" />
+            <option value="$PROJECT_DIR$/feature-add-product-api" />
+            <option value="$PROJECT_DIR$/feature-add-product-impl" />
+            <option value="$PROJECT_DIR$/feature-pdp-api" />
+            <option value="$PROJECT_DIR$/feature-pdp-impl" />
+            <option value="$PROJECT_DIR$/feature-products-api" />
+            <option value="$PROJECT_DIR$/feature-products-impl" />
           </set>
         </option>
       </GradleProjectSettings>

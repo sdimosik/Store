@@ -18,57 +18,57 @@ import ru.ozon.route256.workshop1.presentation.viewModel.viewModelCreator
 
 class PDPFragment() : Fragment(R.layout.pdp_fragment) {
 
-    companion object {
-        const val PRODUCT_ID = "ru.ozon.route256.workshop1.presentation.view.productId"
-    }
-
-    private var currentId: String? = null
-
-    val binding by viewBinding(PdpFragmentBinding::bind)
-
-    private val glide by lazy {
-        Glide.with(this)
-    }
-
-    private val viewModel: PDPViewModel by viewModelCreator {
-        PDPViewModel(ServiceLocatorDomain.provideProductsInteractor())
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        currentId = arguments?.getString(PRODUCT_ID)
-        viewModel.getProductById(currentId)
-
-        viewModel.action.observe(viewLifecycleOwner) { event ->
-            when (event.getContentIfNotHandled()) {
-                is BaseViewModel.Action.ShowToast -> {
-                    val textRes = (event.peekContent() as BaseViewModel.Action.ShowToast).messageRes
-                    Toast.makeText(requireContext(), textRes, Toast.LENGTH_SHORT)
-                }
-                else -> {
-
-                }
-            }
-        }
-
-        viewModel.productLD.observe(viewLifecycleOwner) {
-            binding.nameTV.text = it.name
-            binding.priceTV.text = it.price
-
-            glide.load(
-                if (it.images.isNotEmpty()) it.images[0]
-                else ""
-            )
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.productIV)
-
-            binding.ratingView.rating = it.rating.toFloat()
-        }
-    }
-
-    override fun onPause() {
-        setFragmentResult(ProductsFragment.REQUEST_ID_COUNT_ADD_KEY, bundleOf(ProductsFragment.BUNDLE_ID_COUNT_ADD_KEY to currentId))
-        super.onPause()
-    }
+//    companion object {
+//        const val PRODUCT_ID = "ru.ozon.route256.workshop1.presentation.view.productId"
+//    }
+//
+//    private var currentId: String? = null
+//
+//    val binding by viewBinding(PdpFragmentBinding::bind)
+//
+//    private val glide by lazy {
+//        Glide.with(this)
+//    }
+//
+//    private val viewModel: PDPViewModel by viewModelCreator {
+//        PDPViewModel(ServiceLocatorDomain.provideProductsInteractor())
+//    }
+//
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        currentId = arguments?.getString(PRODUCT_ID)
+//        viewModel.getProductById(currentId)
+//
+//        viewModel.action.observe(viewLifecycleOwner) { event ->
+//            when (event.getContentIfNotHandled()) {
+//                is BaseViewModel.Action.ShowToast -> {
+//                    val textRes = (event.peekContent() as BaseViewModel.Action.ShowToast).messageRes
+//                    Toast.makeText(requireContext(), textRes, Toast.LENGTH_SHORT)
+//                }
+//                else -> {
+//
+//                }
+//            }
+//        }
+//
+//        viewModel.productLD.observe(viewLifecycleOwner) {
+//            binding.nameTV.text = it.name
+//            binding.priceTV.text = it.price
+//
+//            glide.load(
+//                if (it.images.isNotEmpty()) it.images[0]
+//                else ""
+//            )
+//                .transition(DrawableTransitionOptions.withCrossFade())
+//                .into(binding.productIV)
+//
+//            binding.ratingView.rating = it.rating.toFloat()
+//        }
+//    }
+//
+//    override fun onPause() {
+//        setFragmentResult(ProductsFragment.REQUEST_ID_COUNT_ADD_KEY, bundleOf(ProductsFragment.BUNDLE_ID_COUNT_ADD_KEY to currentId))
+//        super.onPause()
+//    }
 }
