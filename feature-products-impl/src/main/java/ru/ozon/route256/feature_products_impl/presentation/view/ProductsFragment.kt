@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
@@ -22,14 +21,7 @@ import javax.inject.Inject
 
 class ProductsFragment() : Fragment(R.layout.fragment_products) {
 
-    companion object {
-        const val REQUEST_ID_COUNT_ADD_KEY =
-            "ru.ozon.route256.feature_products_impl.presentation.view.REQUEST_COUNT_KEY"
-        const val BUNDLE_ID_COUNT_ADD_KEY =
-            "ru.ozon.route256.feature_products_impl.presentation.view.BUNDLE_COUNT_KEY"
-    }
-
-    val binding by viewBinding(FragmentProductsBinding::bind)
+    private val binding by viewBinding(FragmentProductsBinding::bind)
 
     @Inject
     lateinit var productNavigationApi: ProductNavigationApi
@@ -45,25 +37,14 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
         ProductsAdapter(
             Glide.with(this)
         ) {
+            viewModel.addCountView(it.guid)
             productNavigationApi.navigateToPDP(this, it.guid)
-//            findNavController().navigate(
-//                R.id.action_fragment_products_to_PDPFragment,
-//                bundleOf(PDPFragment.PRODUCT_ID to it.guid)
-//            )
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ProductFeatureComponent.productFeatureComponent?.inject(this)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        setFragmentResultListener(REQUEST_ID_COUNT_ADD_KEY) { requestKey, bundle ->
-            val id = bundle.getString(BUNDLE_ID_COUNT_ADD_KEY)
-            viewModel.addCountView(id)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,7 +75,6 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
             frgProductsRecycler.adapter = productsAdapter
 
             btnAddProduct.setOnClickListener {
-                //2findNavController().navigate(R.id.action_fragment_products_to_AddProductFragment)
                 productNavigationApi.navigateToAddProduct(this@ProductsFragment)
             }
         }
@@ -121,8 +101,8 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
     }
 
     override fun onPause() {
-        if (isRemoving){
-            if (productNavigationApi.isFeatureClosed(this)){
+        if (isRemoving) {
+            if (productNavigationApi.isFeatureClosed(this)) {
                 ProductFeatureComponent.resetComponent()
             }
         }

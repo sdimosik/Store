@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import ru.ozon.route256.core_navigation_impl.di.FeatureInjectorProxy
-import ru.ozon.route256.feature_pdp_impl.presentation.view.PDPFragment
-import ru.ozon.route256.feature_products_impl.presentation.view.ProductsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,23 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         val navHost =
             supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
-
-//        val inflater = navHost.navController.navInflater
-//        val graph = inflater.inflate(R.navigation.mobile_navigation)
-//        graph.setStartDestination(R.id.fragment_products)
         navController = navHost.navController
-        //navController.setGraph(graph, intent.extras)
-    }
-
-    fun navigateProduct() {
-        FeatureInjectorProxy.initFeatureProductsDI()
-        val newFragment = ProductsFragment()
-
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentContainer, newFragment, ProductsFragment::class.java.simpleName)
-            .addToBackStack(null)
-            .commit()
     }
 
     override fun onSupportNavigateUp(): Boolean {

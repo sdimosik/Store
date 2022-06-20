@@ -18,31 +18,11 @@ class ProductNavigationImpl @Inject constructor() : ProductNavigationApi {
             R.id.action_fragment_products_to_PDPFragment,
             bundleOf(PDPFragment.PRODUCT_ID to guid)
         )
-//        FeatureInjectorProxy.initFeaturePDPDI()
-//        val newFragment = PDPFragment.newInstance(guid)
-//        fragment.activity
-//            ?.supportFragmentManager
-//            ?.beginTransaction()
-//            ?.replace(R.id.fragmentContainer, newFragment, PDPFragment::class.java.simpleName)
-//            ?.addToBackStack(null)
-//            ?.commit()
     }
 
     override fun navigateToAddProduct(fragment: Fragment) {
         FeatureInjectorProxy.initFeatureAddProductDI()
         fragment.findNavController().navigate(R.id.action_fragment_products_to_AddProductFragment)
-//
-//        val newFragment = AddProductFragment()
-//        fragment.activity
-//            ?.supportFragmentManager
-//            ?.beginTransaction()
-//            ?.replace(
-//                R.id.fragmentContainer,
-//                newFragment,
-//                AddProductFragment::class.java.simpleName
-//            )
-//            ?.addToBackStack(null)
-//            ?.commit()
     }
 
     override fun isFeatureClosed(fragment: Fragment): Boolean {

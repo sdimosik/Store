@@ -21,7 +21,7 @@ class AddProductFragment(
 
 ) : Fragment(R.layout.fragment_add_product) {
 
-    val binding by viewBinding(FragmentAddProductBinding::bind)
+    private val binding by viewBinding(FragmentAddProductBinding::bind)
 
     private val viewModel: AddProductViewModel by viewModelCreator {
         AddProductViewModel(addProductInteractor)
@@ -62,5 +62,14 @@ class AddProductFragment(
                 viewModel.addProduct(newProduct)
             }
         }
+    }
+
+    override fun onPause() {
+        if (isRemoving){
+            if (addProductNavigationApi.isFeatureClosed(this)){
+                AddProductFeatureComponent.resetComponent()
+            }
+        }
+        super.onPause()
     }
 }

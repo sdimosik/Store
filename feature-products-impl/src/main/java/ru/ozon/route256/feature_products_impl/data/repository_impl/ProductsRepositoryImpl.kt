@@ -22,30 +22,22 @@ class ProductsRepositoryImpl @Inject constructor(
 
     override suspend fun getProducts(): List<ProductInListDomain> = withContext(Dispatchers.IO) {
         if (isFirstCacheList) {
-            val response = apiService.getProductsInList()
 
-//            if (!response.isSuccessful)
-//                return@withContext cacheList
-//
-//            if (response.body() == null)
-//                return@withContext cacheList
+            val responseList = apiService.getProductsInList()
+            val responseDetail = apiService.getProducts()
 
-//            cacheApi.updateCacheProductList(response.map {
-//                it.toEntity()
-//            }.toMutableList())
-//
-//
-//            isFirstCacheList = false
-//            return@withContext cacheApi.getCacheProductList().map {
-//                it.toDomain()
-//            }
-            return@withContext response.map {
-                it.toDomain()
-            }
-        } else {
-            return@withContext cacheApi.getCacheProductList().map {
-                it.toDomain()
-            }
+            cacheApi.updateCacheProducts(responseDetail.map {
+                it.toEntity()
+            })
+
+            cacheApi.updateCacheProductList(responseList.map {
+                it.toEntity()
+            })
+
+            isFirstCacheList = false
+        }
+        return@withContext cacheApi.getCacheProductList().map {
+            it.toDomain()
         }
     }
 

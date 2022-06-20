@@ -22,19 +22,11 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
 
     companion object {
         const val PRODUCT_ID = "ru.ozon.route256.workshop1.presentation.view.productId"
-
-        fun newInstance(guide: String): PDPFragment {
-            val myFragment = PDPFragment()
-            val args = Bundle()
-            args.putString(PRODUCT_ID, guide)
-            myFragment.arguments = args
-            return myFragment
-        }
     }
 
     private var currentId: String? = null
 
-    val binding by viewBinding(FragmentPdpBinding::bind)
+    private val binding by viewBinding(FragmentPdpBinding::bind)
 
     private val glide by lazy {
         Glide.with(this)
@@ -89,7 +81,6 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
     }
 
     override fun onPause() {
-        //setFragmentResult(ProductsFragment.REQUEST_ID_COUNT_ADD_KEY, bundleOf(ProductsFragment.BUNDLE_ID_COUNT_ADD_KEY to currentId))
         if (isRemoving){
             if (pdpNavigationApi.isFeatureClosed(this)){
                 PDPFeatureComponent.resetComponent()
