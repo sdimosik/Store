@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.PagerSnapHelper
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -15,6 +16,8 @@ import ru.ozon.route256.feature_pdp_impl.R
 import ru.ozon.route256.feature_pdp_impl.databinding.FragmentPdpBinding
 import ru.ozon.route256.feature_pdp_impl.di.PDPFeatureComponent
 import ru.ozon.route256.feature_pdp_impl.domain.interactors.PDPInteractor
+import ru.ozon.route256.feature_pdp_impl.presentation.adapter.ImagesAdapter
+import ru.ozon.route256.feature_pdp_impl.presentation.model.ImageItem
 import ru.ozon.route256.feature_pdp_impl.presentation.view_model.PDPViewModel
 import javax.inject.Inject
 
@@ -42,6 +45,16 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
         PDPViewModel(pdpInteractor)
     }
 
+    private val imagesAdapter by lazy {
+        ImagesAdapter(
+            Glide.with(this)
+        )
+    }
+
+    private val snapHelper by lazy {
+        PagerSnapHelper()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         PDPFeatureComponent.pdpFeatureComponent?.inject(this)
@@ -49,6 +62,9 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.imagesRV.adapter = imagesAdapter
+        snapHelper.attachToRecyclerView(binding.imagesRV)
 
         currentId = arguments?.getString(PRODUCT_ID)
         viewModel.getProductById(currentId)
@@ -69,20 +85,15 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
             binding.nameTV.text = it.name
             binding.priceTV.text = it.price
 
-            glide.load(
-                if (it.images.isNotEmpty()) it.images[0]
-                else ""
-            )
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.productIV)
+            imagesAdapter.items = ImageItem.toList(it.images)
 
             binding.ratingView.rating = it.rating.toFloat()
         }
     }
 
     override fun onPause() {
-        if (isRemoving){
-            if (pdpNavigationApi.isFeatureClosed(this)){
+        if (isRemoving) {
+            if (pdpNavigationApi.isFeatureClosed(this)) {
                 PDPFeatureComponent.resetComponent()
             }
         }

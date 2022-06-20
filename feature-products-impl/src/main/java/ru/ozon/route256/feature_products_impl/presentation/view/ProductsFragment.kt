@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
@@ -15,7 +16,7 @@ import ru.ozon.route256.feature_products_impl.R
 import ru.ozon.route256.feature_products_impl.databinding.FragmentProductsBinding
 import ru.ozon.route256.feature_products_impl.di.ProductFeatureComponent
 import ru.ozon.route256.feature_products_impl.domain.interactors.ProductsInteractor
-import ru.ozon.route256.feature_products_impl.presentation.view.adapters.ProductsAdapter
+import ru.ozon.route256.feature_products_impl.presentation.adapter.ProductsAdapter
 import ru.ozon.route256.feature_products_impl.presentation.view_model.ProductsViewModel
 import javax.inject.Inject
 
@@ -91,7 +92,7 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
         }
 
         viewModel.productLD.observe(viewLifecycleOwner) {
-            productsAdapter.submitList(it)
+            productsAdapter.items = it
         }
     }
 
