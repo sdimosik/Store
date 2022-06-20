@@ -25,7 +25,6 @@
         android:id="@+id/frg_products__recycler"
         style="@style/Recycler.Linear.Vertical"
         android:layout_width="match_parent"
-        android:clipToPadding="false"
         android:padding="4dp"
         android:layout_height="match_parent"
         tools:listitem="@layout/product_list_item" />
