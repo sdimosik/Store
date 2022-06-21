@@ -1,5 +1,6 @@
 package ru.ozon.route256.core_navigation_impl.di
 
+import android.app.Application
 import ru.ozon.route256.core_network_impl.di.CoreNetworkComponent
 import ru.ozon.route256.core_storage_impl.di.CoreStorageComponent
 import ru.ozon.route256.feature_add_product_impl.di.AddProductFeatureComponent
@@ -10,38 +11,38 @@ import ru.ozon.route256.feature_products_impl.di.DaggerProductFeatureComponent_P
 import ru.ozon.route256.feature_products_impl.di.ProductFeatureComponent
 
 object FeatureInjectorProxy {
-    fun initFeatureProductsDI() {
+    fun initFeatureProductsDI(application: Application) {
         ProductFeatureComponent.initAndGet(
             DaggerProductFeatureComponent_ProductFeatureDependenciesComponent.builder()
-                .networkApi(CoreNetworkComponent.get())
+                .networkApi(CoreNetworkComponent.get(application))
                 .productNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getProductNavigation()
                 )
-                .storageApi(CoreStorageComponent.get())
+                .storageApi(CoreStorageComponent.get(application))
                 .build()
         )
     }
 
-    fun initFeaturePDPDI() {
+    fun initFeaturePDPDI(application: Application) {
         PDPFeatureComponent.initAndGet(
             DaggerPDPFeatureComponent_PDPFeatureDependenciesComponent.builder()
-                .networkApi(CoreNetworkComponent.get())
+                .networkApi(CoreNetworkComponent.get(application))
                 .pDPNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getPDPNavigation()
                 )
-                .storageApi(CoreStorageComponent.get())
+                .storageApi(CoreStorageComponent.get(application))
                 .build()
         )
     }
 
-    fun initFeatureAddProductDI() {
+    fun initFeatureAddProductDI(application: Application) {
         AddProductFeatureComponent.initAndGet(
             DaggerAddProductFeatureComponent_AddProductFeatureDependenciesComponent.builder()
-                .networkApi(CoreNetworkComponent.get())
+                .networkApi(CoreNetworkComponent.get(application))
                 .addProductNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getAddProductNavigation()
                 )
-                .storageApi(CoreStorageComponent.get())
+                .storageApi(CoreStorageComponent.get(application))
                 .build()
         )
     }

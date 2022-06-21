@@ -33,6 +33,8 @@ android {
 
 dependencies {
 
+    implementation project(":core-utils")
+
     implementation retrofit
     implementation retrofitConverter
     implementation okhttp

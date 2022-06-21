@@ -4,6 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.ozon.route256.core_network_api.ProductApi
 import ru.ozon.route256.core_storage_api.CacheApi
+import ru.ozon.route256.core_utils.NetUtil
+import ru.ozon.route256.core_utils.requireValue
 import ru.ozon.route256.feature_products_impl.data.mapper.toDomain
 import ru.ozon.route256.feature_products_impl.data.mapper.toEntity
 import ru.ozon.route256.feature_products_impl.domain.model.ProductInListDomain
@@ -15,43 +17,49 @@ class ProductsRepositoryImpl @Inject constructor(
     private val cacheApi: CacheApi
 ) : ProductsRepository {
 
-    companion object {
-        // cache moment
-        private var isFirstCacheList = true
-    }
-
     override suspend fun getProducts(): List<ProductInListDomain> = withContext(Dispatchers.IO) {
-        if (isFirstCacheList) {
-
-            val responseList = apiService.getProductsInList()
-            val responseDetail = apiService.getProducts()
-
-            cacheApi.updateCacheProducts(responseDetail.map {
+        if (cacheApi.getCacheProductList() == null) {
+            val responseList = NetUtil.get {
+                apiService.getProductsInList()
+            }
+            cacheApi.updateCacheProductList(responseList.requireValue().map {
                 it.toEntity()
             })
-
-            cacheApi.updateCacheProductList(responseList.map {
-                it.toEntity()
-            })
-
-            isFirstCacheList = false
         }
-        return@withContext cacheApi.getCacheProductList().map {
+        return@withContext cacheApi.getCacheProductList()?.map {
             it.toDomain()
-        }
+        } ?: mutableListOf()
     }
 
 
     override suspend fun addCountView(id: String?) {
         withContext(Dispatchers.IO) {
             val cacheList = cacheApi.getCacheProductList()
-            cacheList.mapIndexed { _, productInListUI ->
-                if (productInListUI.guid == id) {
-                    productInListUI.countView += 1
-                    return@mapIndexed
+            if (cacheList == null) {
+                val list = NetUtil.get {
+                    apiService.getProducts()
                 }
+                cacheApi.updateCacheProducts(list.requireValue().map {
+                    it.toEntity()
+                })
+                val newCacheList = cacheApi.getCacheProductList()!!
+                newCacheList.mapIndexed { _, productInListUI ->
+                    if (productInListUI.guid == id) {
+                        productInListUI.countView += 1
+                        return@mapIndexed
+                    }
+                }
+                cacheApi.updateCacheProductList(newCacheList)
             }
-            cacheApi.updateCacheProductList(cacheList)
+            else {
+                cacheList.mapIndexed { _, productInListUI ->
+                    if (productInListUI.guid == id) {
+                        productInListUI.countView += 1
+                        return@mapIndexed
+                    }
+                }
+                cacheApi.updateCacheProductList(cacheList)
+            }
         }
     }
 }

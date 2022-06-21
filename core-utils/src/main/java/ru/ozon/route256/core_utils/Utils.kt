@@ -4,7 +4,7 @@ import android.content.Context
 
 class Utils {
     companion object {
-        private const val APP_PREFERENCES_NAME = "ru.ozon.route256.core_utils.APP_PREFERENCES_NAME"
+        const val APP_PREFERENCES_NAME = "ru.ozon.route256.core_utils.APP_PREFERENCES_NAME"
 
 //        fun getAppContext() = App.getAppContext()
 //

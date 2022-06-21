@@ -83,7 +83,7 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
             when (event.getContentIfNotHandled()) {
                 is BaseViewModel.Action.ShowToast -> {
                     val textRes = (event.peekContent() as BaseViewModel.Action.ShowToast).messageRes
-                    Toast.makeText(requireContext(), textRes, Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), textRes, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
 

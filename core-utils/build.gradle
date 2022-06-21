@@ -45,6 +45,8 @@ dependencies {
     implementation liveData
     implementation fragment
     implementation gson
+    implementation retrofit
+    implementation retrofitConverter
 
     implementation dagger
     kapt daggerCompiler

@@ -19,6 +19,21 @@ fun ProductDTO.toDomain(): ProductDomain = ProductDomain(
     additionalParams
 )
 
+fun ProductDTO.toEntity(): ProductEntity = ProductEntity(
+    guid,
+    name,
+    price,
+    description,
+    rating,
+    isFavorite,
+    isInCart,
+    images,
+    weight,
+    count,
+    availableCount,
+    additionalParams
+)
+
 fun ProductEntity.toDomain(): ProductDomain = ProductDomain(
     guid,
     name,

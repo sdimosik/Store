@@ -10,14 +10,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
-    init {
-        FeatureInjectorProxy.initFeatureProductsDI()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        FeatureInjectorProxy.initFeatureProductsDI(this.application)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        FeatureInjectorProxy.initFeatureProductsDI()
 
         val navHost =
             supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
