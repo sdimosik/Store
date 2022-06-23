@@ -2,12 +2,11 @@ package ru.ozon.route256.feature_add_product_impl.presentation.view
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
-import ru.ozon.route256.core_utils.viewModelCreator
 import ru.ozon.route256.feature_add_product_api.AddProductNavigationApi
 import ru.ozon.route256.feature_add_product_impl.R
 import ru.ozon.route256.feature_add_product_impl.databinding.FragmentAddProductBinding
@@ -23,8 +22,11 @@ class AddProductFragment(
 
     private val binding by viewBinding(FragmentAddProductBinding::bind)
 
-    private val viewModel: AddProductViewModel by viewModelCreator {
-        AddProductViewModel(addProductInteractor)
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: AddProductViewModel by viewModels {
+        viewModelFactory
     }
 
     @Inject

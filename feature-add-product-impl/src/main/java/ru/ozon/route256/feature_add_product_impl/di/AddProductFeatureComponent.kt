@@ -10,7 +10,8 @@ import ru.ozon.route256.feature_add_product_impl.presentation.view.AddProductFra
 @Component(
     modules = [
         InteractorModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        ViewModelModule::class
     ],
     dependencies = [
         AddProductFeatureDependencies::class

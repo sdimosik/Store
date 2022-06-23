@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.PagerSnapHelper
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.ozon.route256.core_utils.ui.BaseViewModel
-import ru.ozon.route256.core_utils.viewModelCreator
 import ru.ozon.route256.feature_pdp_api.PDPNavigationApi
 import ru.ozon.route256.feature_pdp_impl.R
 import ru.ozon.route256.feature_pdp_impl.databinding.FragmentPdpBinding
 import ru.ozon.route256.feature_pdp_impl.di.PDPFeatureComponent
-import ru.ozon.route256.feature_pdp_impl.domain.interactors.PDPInteractor
 import ru.ozon.route256.feature_pdp_impl.presentation.adapter.ImagesAdapter
 import ru.ozon.route256.feature_pdp_impl.presentation.model.ImageItem
 import ru.ozon.route256.feature_pdp_impl.presentation.view_model.PDPViewModel
@@ -38,11 +37,12 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
     @Inject
     lateinit var pdpNavigationApi: PDPNavigationApi
 
-    @Inject
-    lateinit var pdpInteractor: PDPInteractor
 
-    private val viewModel: PDPViewModel by viewModelCreator {
-        PDPViewModel(pdpInteractor)
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: PDPViewModel by viewModels {
+        viewModelFactory
     }
 
     private val imagesAdapter by lazy {

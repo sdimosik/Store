@@ -10,7 +10,8 @@ import ru.ozon.route256.feature_pdp_impl.presentation.view.PDPFragment
 @Component(
     modules = [
         InteractorModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        ViewModelModule::class
     ],
     dependencies = [
         PDPFeatureDependencies::class

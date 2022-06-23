@@ -26,8 +26,12 @@ class ProductNavigationImpl @Inject constructor() : ProductNavigationApi {
     }
 
     override fun isFeatureClosed(fragment: Fragment): Boolean {
-        return if (fragment.javaClass.simpleName != ProductsFragment::class.simpleName) {
-            fragment.activity?.supportFragmentManager?.findFragmentByTag(ProductsFragment::class.java.simpleName) == null
+        return if (fragment is ProductsFragment) {
+            val navHost =
+                fragment.activity?.supportFragmentManager?.findFragmentById(R.id.fragmentContainer)
+            navHost?.childFragmentManager?.fragments?.find {
+                it is ProductsFragment
+            } == null
         } else {
             true
         }
