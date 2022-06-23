@@ -45,6 +45,7 @@ dependencies {
     implementation liveData
     implementation fragment
     implementation gson
+    implementation viewModel
 
     implementation dagger
     kapt daggerCompiler

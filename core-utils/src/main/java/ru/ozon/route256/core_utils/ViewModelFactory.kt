@@ -1,19 +1,19 @@
 package ru.ozon.route256.core_utils
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ru.ozon.route256.core_utils.di.PerFeature
+import javax.inject.Inject
+import javax.inject.Provider
 
-typealias ViewModelCreator = () -> ViewModel?
-
-class ViewModelFactory(
-    private val viewModelCreator: ViewModelCreator = { null }
+@PerFeature
+class ViewModelFactory @Inject constructor(
+    private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
-
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>) = viewModelCreator() as T
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val creator = creators[modelClass] ?: creators.entries.firstOrNull()?.value
+        ?: throw IllegalArgumentException("unknown model class $modelClass")
+        return creator.get() as T
+    }
 }
-
-inline fun <reified VM : ViewModel> Fragment.viewModelCreator(noinline creator: ViewModelCreator): Lazy<VM> =
-    viewModels { ViewModelFactory(creator) }

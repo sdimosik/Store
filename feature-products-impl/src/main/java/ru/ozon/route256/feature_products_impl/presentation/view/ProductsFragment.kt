@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import ru.ozon.route256.core_utils.ui.BaseViewModel
-import ru.ozon.route256.core_utils.viewModelCreator
 import ru.ozon.route256.feature_products_api.ProductNavigationApi
 import ru.ozon.route256.feature_products_impl.R
 import ru.ozon.route256.feature_products_impl.databinding.FragmentProductsBinding
@@ -28,10 +28,10 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
     lateinit var productNavigationApi: ProductNavigationApi
 
     @Inject
-    lateinit var productsInteractor: ProductsInteractor
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: ProductsViewModel by viewModelCreator {
-        ProductsViewModel(productsInteractor)
+    private val viewModel: ProductsViewModel by viewModels {
+        viewModelFactory
     }
 
     private val productsAdapter by lazy {
