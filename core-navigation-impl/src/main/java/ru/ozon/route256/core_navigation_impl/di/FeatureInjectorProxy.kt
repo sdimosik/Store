@@ -9,16 +9,27 @@ import ru.ozon.route256.feature_pdp_impl.di.DaggerPDPFeatureComponent_PDPFeature
 import ru.ozon.route256.feature_pdp_impl.di.PDPFeatureComponent
 import ru.ozon.route256.feature_products_impl.di.DaggerProductFeatureComponent_ProductFeatureDependenciesComponent
 import ru.ozon.route256.feature_products_impl.di.ProductFeatureComponent
+import ru.ozon.route256.worker_impl.di.DaggerWorkerComponent_WorkerDependenciesComponent
+import ru.ozon.route256.worker_impl.di.WorkerComponent
 
 object FeatureInjectorProxy {
     fun initFeatureProductsDI(application: Application) {
         ProductFeatureComponent.initAndGet(
+            application,
             DaggerProductFeatureComponent_ProductFeatureDependenciesComponent.builder()
                 .networkApi(CoreNetworkComponent.get(application))
                 .productNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getProductNavigation()
                 )
                 .storageApi(CoreStorageComponent.get(application))
+                .workerApi(
+                    WorkerComponent.get(
+                        DaggerWorkerComponent_WorkerDependenciesComponent.builder()
+                            .networkApi(CoreNetworkComponent.get(application))
+                            .storageApi(CoreStorageComponent.get(application))
+                            .build()
+                    )
+                )
                 .build()
         )
     }

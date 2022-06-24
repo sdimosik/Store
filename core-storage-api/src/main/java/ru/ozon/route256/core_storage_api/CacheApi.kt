@@ -9,9 +9,19 @@ interface CacheApi {
 
     suspend fun getCacheProductList(): List<ProductInListEntity>?
 
+    suspend fun getOnlyCacheProductList(): List<ProductInListEntity>?
+
     suspend fun updateCacheProducts(list: List<ProductEntity>)
 
     suspend fun getCacheProducts(): List<ProductEntity>?
+
+    suspend fun updateAddCacheProductList(list: List<ProductInListEntity>)
+
+    suspend fun getAddCacheProductList(): List<ProductInListEntity>?
+
+    suspend fun updateAddCacheProducts(list: List<ProductEntity>)
+
+    suspend fun getAddCacheProducts(): List<ProductEntity>?
 
     suspend fun addProduct(product: ProductEntity)
 }

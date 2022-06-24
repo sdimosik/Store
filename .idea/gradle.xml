@@ -25,6 +25,8 @@
             <option value="$PROJECT_DIR$/feature-pdp-impl" />
             <option value="$PROJECT_DIR$/feature-products-api" />
             <option value="$PROJECT_DIR$/feature-products-impl" />
+            <option value="$PROJECT_DIR$/worker-api" />
+            <option value="$PROJECT_DIR$/worker-impl" />
           </set>
         </option>
       </GradleProjectSettings>

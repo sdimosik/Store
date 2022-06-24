@@ -1,6 +1,5 @@
 package ru.ozon.route256.core_storage_impl.di
 
-import android.app.Application
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component

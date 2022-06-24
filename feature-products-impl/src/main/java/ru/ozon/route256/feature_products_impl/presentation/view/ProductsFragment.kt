@@ -1,6 +1,5 @@
 package ru.ozon.route256.feature_products_impl.presentation.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkInfo
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import ru.ozon.route256.core_utils.ui.BaseViewModel
@@ -15,14 +15,17 @@ import ru.ozon.route256.feature_products_api.ProductNavigationApi
 import ru.ozon.route256.feature_products_impl.R
 import ru.ozon.route256.feature_products_impl.databinding.FragmentProductsBinding
 import ru.ozon.route256.feature_products_impl.di.ProductFeatureComponent
-import ru.ozon.route256.feature_products_impl.domain.interactors.ProductsInteractor
 import ru.ozon.route256.feature_products_impl.presentation.adapter.ProductsAdapter
 import ru.ozon.route256.feature_products_impl.presentation.view_model.ProductsViewModel
 import javax.inject.Inject
 
-class ProductsFragment() : Fragment(R.layout.fragment_products) {
+class ProductsFragment : Fragment(R.layout.fragment_products) {
 
     private val binding by viewBinding(FragmentProductsBinding::bind)
+
+    init {
+        ProductFeatureComponent.productFeatureComponent?.inject(this)
+    }
 
     @Inject
     lateinit var productNavigationApi: ProductNavigationApi
@@ -43,15 +46,34 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        ProductFeatureComponent.productFeatureComponent?.inject(this)
+    private fun refreshData(forceRefresh: Boolean) {
+        val list = viewModel.loadContent(forceRefresh)
+        list.forEachIndexed { index, liveData ->
+            liveData.observe(viewLifecycleOwner) {
+                if (index == list.size - 1) {
+                    if (it.state == WorkInfo.State.SUCCEEDED) {
+                        viewModel.getProductsList()
+                    }
+                    if (it.state == WorkInfo.State.SUCCEEDED || it.state == WorkInfo.State.FAILED) {
+                        binding.swipeContainer.isRefreshing = false
+                    }
+                } else if (index == 0) {
+                    if (it.state == WorkInfo.State.RUNNING) {
+                        binding.swipeContainer.isRefreshing = true
+                    }
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         with(binding) {
+
+            swipeContainer.setOnRefreshListener {
+                refreshData(true)
+            }
+
             frgProductsRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -79,6 +101,16 @@ class ProductsFragment() : Fragment(R.layout.fragment_products) {
                 productNavigationApi.navigateToAddProduct(this@ProductsFragment)
             }
         }
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is BaseViewModel.State.Init -> {
+                    refreshData(false)
+                }
+                is BaseViewModel.State.Alive -> {
+                }
+            }
+        }
+
         viewModel.action.observe(viewLifecycleOwner) { event ->
             when (event.getContentIfNotHandled()) {
                 is BaseViewModel.Action.ShowToast -> {

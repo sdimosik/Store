@@ -6,6 +6,8 @@ dependencies {
     implementation project(":core-network-api")
     implementation project(":core-storage-api")
     implementation project(":feature-products-api")
+    implementation project(":worker-api")
+    implementation project(":worker-impl")
 
     implementation coreKtx
     implementation appCompat
@@ -20,9 +22,15 @@ dependencies {
     implementation fragment
     implementation retrofit
     implementation retrofitConverter
+    implementation swipeToRefresh
+    implementation guava
+    implementation guavaKotlin
+    implementation callbackToFutureAdapter
 
     implementation adapterDelegateDSL
     implementation adapterDelegateViewBinding
+
+    implementation workerKtx
 
     kapt daggerCompiler
 

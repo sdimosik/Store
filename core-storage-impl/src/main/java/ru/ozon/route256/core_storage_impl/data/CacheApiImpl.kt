@@ -24,8 +24,8 @@ class CacheApiImpl @Inject constructor(
         private const val CACHE_PRODUCT_LIST = "CACHE_PRODUCT_LIST"
         private const val CACHE_PRODUCTS = "CACHE_PRODUCTS"
 
-        private var cacheList = mutableListOf<ProductInListEntity>()
-        private var cacheDetailProduct = mutableListOf<ProductEntity>()
+        private const val CACHE_PRODUCT_LIST_ADD = "CACHE_PRODUCT_LIST_ADD"
+        private const val CACHE_PRODUCTS_ADD = "CACHE_PRODUCTS_ADD"
     }
 
 //    override suspend fun updateCacheProductList(list: List<ProductInListEntity>) {
@@ -57,6 +57,21 @@ class CacheApiImpl @Inject constructor(
     }
 
     override suspend fun getCacheProductList(): List<ProductInListEntity>? {
+        val mainCache =
+            context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE)
+                .getParcelable<ProductInListEntityList?>(
+                    CACHE_PRODUCT_LIST,
+                    null
+                )?.toList()
+        val secondCache = getAddCacheProductList()?.toList()
+        return if (mainCache == null && secondCache == null) {
+            null
+        } else {
+            (mainCache ?: mutableListOf()).plus(secondCache ?: mutableListOf())
+        }
+    }
+
+    override suspend fun getOnlyCacheProductList(): List<ProductInListEntity>? {
         return context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE)
             .getParcelable<ProductInListEntityList?>(
                 CACHE_PRODUCT_LIST,
@@ -72,25 +87,62 @@ class CacheApiImpl @Inject constructor(
     }
 
     override suspend fun getCacheProducts(): List<ProductEntity>? {
+        val mainCache =
+            context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE)
+                .getParcelable<ProductEntityList?>(
+                    CACHE_PRODUCTS,
+                    null
+                )?.toList()
+        val secondCache = getAddCacheProducts()?.toList()
+        return if (mainCache == null && secondCache == null) {
+            null
+        } else {
+            (mainCache ?: mutableListOf()).plus(secondCache ?: mutableListOf())
+        }
+    }
+
+    override suspend fun updateAddCacheProductList(list: List<ProductInListEntity>) {
+        val data = ProductInListEntityList(list)
+        context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE).edit {
+            putParcelable(CACHE_PRODUCT_LIST_ADD, data)
+        }
+    }
+
+    override suspend fun getAddCacheProductList(): List<ProductInListEntity>? {
+        return context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE)
+            .getParcelable<ProductInListEntityList?>(
+                CACHE_PRODUCT_LIST_ADD,
+                null
+            )?.toList()
+    }
+
+    override suspend fun updateAddCacheProducts(list: List<ProductEntity>) {
+        val data = ProductEntityList(list)
+        context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE).edit {
+            putParcelable(CACHE_PRODUCTS_ADD, data)
+        }
+    }
+
+    override suspend fun getAddCacheProducts(): List<ProductEntity>? {
         return context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE)
             .getParcelable<ProductEntityList?>(
-                CACHE_PRODUCTS,
+                CACHE_PRODUCTS_ADD,
                 null
             )?.toList()
     }
 
     override suspend fun addProduct(product: ProductEntity) {
-        val cache_products = getCacheProducts()?.toMutableList() ?: mutableListOf()
+        val cache_products = getAddCacheProducts()?.toMutableList() ?: mutableListOf()
         cache_products.add(product)
 
-        val cache_product_list = getCacheProductList()?.toMutableList() ?: mutableListOf()
+        val cache_product_list = getAddCacheProductList()?.toMutableList() ?: mutableListOf()
         cache_product_list.add(product.toProductInListEntity())
 
         val pref = context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
         pref.edit {
-            putParcelable(CACHE_PRODUCT_LIST, ProductInListEntityList(cache_product_list))
-            putParcelable(CACHE_PRODUCTS, ProductEntityList(cache_products))
+            putParcelable(CACHE_PRODUCT_LIST_ADD, ProductInListEntityList(cache_product_list))
+            putParcelable(CACHE_PRODUCTS_ADD, ProductEntityList(cache_products))
         }
     }
 }

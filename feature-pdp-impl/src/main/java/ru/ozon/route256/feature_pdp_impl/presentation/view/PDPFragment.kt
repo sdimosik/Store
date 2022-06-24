@@ -47,7 +47,7 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
 
     private val imagesAdapter by lazy {
         ImagesAdapter(
-            Glide.with(this)
+            glide
         )
     }
 

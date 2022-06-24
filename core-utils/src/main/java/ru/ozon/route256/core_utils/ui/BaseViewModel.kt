@@ -14,10 +14,18 @@ abstract class BaseViewModel : ViewModel() {
         data class ShowToast(@StringRes val messageRes: Int) : Action()
     }
 
-    private fun <T> T.asEvent() = Event(this)
+    sealed class State {
+        object Init : State()
+        object Alive : State()
+    }
+
+    protected val _state = MutableLiveData<State>(State.Init)
+    val state: LiveData<State> = _state
+
+    fun <T> T.asEvent() = Event(this)
 
     private fun getMessageExceptionRes(cause: Throwable): Int {
-        return when(cause){
+        return when (cause) {
             is NoConnectionException -> R.string.no_internet_connection
             else -> R.string.base_error
         }
@@ -25,11 +33,15 @@ abstract class BaseViewModel : ViewModel() {
 
     protected val handlerException = CoroutineExceptionHandler { _, exception ->
         run {
-            val messageRes = getMessageExceptionRes(exception)
-            _action.postValue(Action.ShowToast(messageRes).asEvent())
+            handleException(exception)
         }
     }
 
-    private val _action = MutableLiveData<Event<Action>>()
+    protected open fun handleException(exception: Throwable) {
+        val messageRes = getMessageExceptionRes(exception)
+        _action.postValue(Action.ShowToast(messageRes).asEvent())
+    }
+
+    protected val _action = MutableLiveData<Event<Action>>()
     val action: LiveData<Event<Action>> = _action
 }

@@ -3,6 +3,7 @@ package ru.ozon.route256.feature_products_impl.presentation.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
 import kotlinx.coroutines.launch
 import ru.ozon.route256.core_utils.ui.BaseViewModel
 import ru.ozon.route256.feature_products_impl.domain.interactors.ProductsInteractor
@@ -16,8 +17,18 @@ class ProductsViewModel @Inject constructor(
     private val _productLD = MutableLiveData<List<ProductInListUI>>()
     val productLD: LiveData<List<ProductInListUI>> = _productLD
 
+    fun loadContent(forceRefresh: Boolean): List<LiveData<WorkInfo>> {
+        _state.postValue(State.Alive)
+        return productsInteractor.loadContent(forceRefresh)
+    }
+
+    public override fun handleException(exception: Throwable) {
+        super.handleException(exception)
+    }
+
     fun getProductsList() {
         viewModelScope.launch(handlerException) {
+            _state.postValue(State.Alive)
             _productLD.postValue(productsInteractor.getProductsList())
         }
     }
