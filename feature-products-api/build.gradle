@@ -1,0 +1,12 @@
+apply from: "$rootProject.projectDir/android-library.gradle"
+
+dependencies {
+
+    implementation coreKtx
+    implementation appCompat
+    implementation material
+
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
+}

@@ -6,7 +6,7 @@ plugins {
     id 'kotlin-parcelize'
 }
 
-apply from: "dependencies.gradle"
+apply from: "../dependencies.gradle"
 
 android {
     compileSdk 31
@@ -28,11 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     buildFeatures {
         viewBinding true
@@ -40,6 +40,20 @@ android {
 }
 
 dependencies {
+
+    implementation project(":core-network-api")
+    implementation project(":core-network-impl")
+    implementation project(":core-storage-api")
+    implementation project(":core-storage-impl")
+    implementation project(":core-utils")
+    implementation project(":feature-pdp-api")
+    implementation project(":feature-pdp-impl")
+    implementation project(":feature-products-api")
+    implementation project(":feature-products-impl")
+    implementation project(":feature-add-product-api")
+    implementation project(":feature-add-product-impl")
+    implementation project(":core-navigation-api")
+    implementation project(":core-navigation-impl")
 
     implementation coreKtx
     implementation navigation.values()
@@ -50,7 +64,6 @@ dependencies {
     implementation lifecycle
     implementation liveData
     implementation glide
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation junit
     androidTestImplementation androidTestJunit
     androidTestImplementation espresso
@@ -58,4 +71,7 @@ dependencies {
     implementation retrofit
     implementation retrofitConverter
     implementation okhttp
+    implementation dagger
+
+    kapt daggerCompiler
 }

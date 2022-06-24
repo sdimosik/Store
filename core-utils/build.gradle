@@ -1,0 +1,18 @@
+apply from: "$rootProject.projectDir/android-library.gradle"
+
+dependencies {
+
+    implementation coreKtx
+    implementation appCompat
+    implementation material
+    implementation constraintLayout
+    implementation viewModel
+    implementation lifecycle
+    implementation liveData
+    implementation fragment
+    implementation gson
+    implementation viewModel
+
+    implementation dagger
+    kapt daggerCompiler
+}
