@@ -2,15 +2,10 @@ package ru.ozon.route256.workshop1
 
 import dagger.Component
 import dagger.internal.Preconditions
-import ru.ozon.route256.worker_impl.di.WorkerComponent
 import javax.inject.Singleton
 
 @Singleton
-@Component(
-    dependencies = [
-        WorkerComponent::class
-    ]
-)
+@Component
 abstract class AppComponent {
 
     companion object {

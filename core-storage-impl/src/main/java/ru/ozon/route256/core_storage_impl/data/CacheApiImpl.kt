@@ -28,27 +28,6 @@ class CacheApiImpl @Inject constructor(
         private const val CACHE_PRODUCTS_ADD = "CACHE_PRODUCTS_ADD"
     }
 
-//    override suspend fun updateCacheProductList(list: List<ProductInListEntity>) {
-//        cacheList = list.toMutableList()
-//    }
-//
-//    override suspend fun getCacheProductList(): List<ProductInListEntity> {
-//        return cacheList
-//    }
-//
-//    override suspend fun updateCacheProducts(list: List<ProductEntity>) {
-//        cacheDetailProduct = list.toMutableList()
-//    }
-//
-//    override suspend fun getCacheProducts(): List<ProductEntity> {
-//        return cacheDetailProduct
-//    }
-//
-//    override suspend fun addProduct(product: ProductEntity) {
-//        cacheDetailProduct.add(product)
-//        cacheList.add(product.toProductInListEntity())
-//    }
-
     override suspend fun updateCacheProductList(list: List<ProductInListEntity>) {
         val data = ProductInListEntityList(list)
         context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE).edit {

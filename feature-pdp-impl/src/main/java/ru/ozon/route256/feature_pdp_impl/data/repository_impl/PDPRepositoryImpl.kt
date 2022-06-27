@@ -17,17 +17,6 @@ class PDPRepositoryImpl @Inject constructor(
     override suspend fun getProductById(guid: String): ProductDomain? =
         withContext(Dispatchers.IO) {
             val response = cacheApi.getCacheProducts()
-//            return@withContext if (response == null) {
-//                cacheApi.updateCacheProducts(NetUtil.get {
-//                    apiService.getProducts()
-//                }.requireValue().map {
-//                    it.toEntity()
-//                })
-//                val newResponse = cacheApi.getCacheProducts()
-//                newResponse?.find { it.guid == guid }?.toDomain()
-//            } else {
-//                response.find { it.guid == guid }?.toDomain()
-//            }
             return@withContext response?.find { it.guid == guid }?.toDomain()
         }
 }

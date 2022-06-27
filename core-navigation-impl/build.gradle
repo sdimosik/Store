@@ -2,8 +2,6 @@ apply from: "$rootProject.projectDir/android-library.gradle"
 
 dependencies {
 
-    implementation project(":worker-api")
-    implementation project(":worker-impl")
     implementation project(":core-navigation-api")
     implementation project(":core-network-api")
     implementation project(":core-network-impl")

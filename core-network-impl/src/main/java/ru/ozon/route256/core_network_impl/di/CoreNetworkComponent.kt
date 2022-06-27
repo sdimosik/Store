@@ -12,19 +12,19 @@ import javax.inject.Singleton
 interface CoreNetworkComponent : NetworkApi {
     companion object {
         @Volatile
-        private var sCoreNetworkComponent: CoreNetworkComponent? = null
+        private var coreNetworkComponent: CoreNetworkComponent? = null
 
         fun get(application: Application): CoreNetworkComponent? {
-            if (sCoreNetworkComponent == null) {
+            if (coreNetworkComponent == null) {
                 synchronized(CoreNetworkComponent::class.java) {
-                    if (sCoreNetworkComponent == null) {
-                        sCoreNetworkComponent = DaggerCoreNetworkComponent.builder()
+                    if (coreNetworkComponent == null) {
+                        coreNetworkComponent = DaggerCoreNetworkComponent.builder()
                             .applicationContext(application.applicationContext)
                             .build()
                     }
                 }
             }
-            return sCoreNetworkComponent
+            return coreNetworkComponent
         }
     }
 

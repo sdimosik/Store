@@ -54,8 +54,6 @@ dependencies {
     implementation project(":feature-add-product-impl")
     implementation project(":core-navigation-api")
     implementation project(":core-navigation-impl")
-    implementation project(":worker-api")
-    implementation project(":worker-impl")
 
     implementation coreKtx
     implementation navigation.values()

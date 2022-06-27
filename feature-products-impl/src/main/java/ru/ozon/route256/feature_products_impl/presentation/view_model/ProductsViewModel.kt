@@ -22,10 +22,6 @@ class ProductsViewModel @Inject constructor(
         return productsInteractor.loadContent(forceRefresh)
     }
 
-    public override fun handleException(exception: Throwable) {
-        super.handleException(exception)
-    }
-
     fun getProductsList() {
         viewModelScope.launch(handlerException) {
             _state.postValue(State.Alive)

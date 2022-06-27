@@ -81,11 +81,15 @@ class AddProductFragment(
     }
 
     override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onDestroy() {
         if (isRemoving){
             if (addProductNavigationApi.isFeatureClosed(this)){
                 AddProductFeatureComponent.resetComponent()
             }
         }
-        super.onPause()
+        super.onDestroy()
     }
 }

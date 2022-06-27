@@ -6,8 +6,6 @@ dependencies {
     implementation project(":core-network-api")
     implementation project(":core-storage-api")
     implementation project(":feature-products-api")
-    implementation project(":worker-api")
-    implementation project(":worker-impl")
 
     implementation coreKtx
     implementation appCompat

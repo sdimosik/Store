@@ -1,6 +1,7 @@
 package ru.ozon.route256.feature_products_impl.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -64,6 +65,11 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                 }
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("FIRST", "onCreate")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -130,15 +136,27 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
 
     override fun onResume() {
         super.onResume()
+        Log.d("FIRST", "onResume")
         viewModel.getProductsList()
     }
 
     override fun onPause() {
+        super.onPause()
+        Log.d("FIRST", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("FIRST", "onStop")
+    }
+
+    override fun onDestroy() {
         if (isRemoving) {
             if (productNavigationApi.isFeatureClosed(this)) {
                 ProductFeatureComponent.resetComponent()
             }
         }
-        super.onPause()
+        super.onDestroy()
+        Log.d("FIRST", "onDestroy")
     }
 }

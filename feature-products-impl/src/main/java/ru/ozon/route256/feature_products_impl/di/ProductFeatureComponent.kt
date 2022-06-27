@@ -7,8 +7,9 @@ import ru.ozon.route256.core_network_api.NetworkApi
 import ru.ozon.route256.core_storage_api.StorageApi
 import ru.ozon.route256.core_utils.di.PerFeature
 import ru.ozon.route256.feature_products_api.ProductNavigationApi
+import ru.ozon.route256.feature_products_impl.data.worker.DetailProductsWorker
+import ru.ozon.route256.feature_products_impl.data.worker.ProductListWorker
 import ru.ozon.route256.feature_products_impl.presentation.view.ProductsFragment
-import ru.ozon.route256.worker_api.WorkerApi
 
 @Component(
     modules = [
@@ -29,7 +30,10 @@ interface ProductFeatureComponent {
         var productFeatureComponent: ProductFeatureComponent? = null
             private set
 
-        fun initAndGet(applicationContext: Context,productFeatureDependencies: ProductFeatureDependencies): ProductFeatureComponent? {
+        fun initAndGet(
+            applicationContext: Context,
+            productFeatureDependencies: ProductFeatureDependencies
+        ): ProductFeatureComponent? {
             if (productFeatureComponent == null) {
                 synchronized(ProductFeatureComponent::class) {
                     productFeatureComponent = DaggerProductFeatureComponent.builder()
@@ -55,6 +59,9 @@ interface ProductFeatureComponent {
 
     fun inject(fragment: ProductsFragment)
 
+    fun inject(detailProductsWorker: DetailProductsWorker)
+    fun inject(productListWorker: ProductListWorker)
+
     @Component.Builder
     interface Builder {
         @BindsInstance
@@ -69,7 +76,6 @@ interface ProductFeatureComponent {
             NetworkApi::class,
             ProductNavigationApi::class,
             StorageApi::class,
-            WorkerApi::class
         ]
     )
     interface ProductFeatureDependenciesComponent : ProductFeatureDependencies
