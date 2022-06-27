@@ -1,8 +1,7 @@
 package ru.ozon.route256.feature_products_impl.data.worker
 
 import android.content.Context
-import androidx.work.CoroutineWorker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -18,6 +17,21 @@ class ProductListWorker(
     context: Context,
     params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
+
+    companion object {
+        fun createRequest(forceRefresh: Boolean): OneTimeWorkRequest {
+            val inputData: Data = Data.Builder()
+                .putBoolean("anyway", forceRefresh)
+                .build()
+
+            return OneTimeWorkRequest.Builder(ProductListWorker::class.java)
+                .setInputData(inputData)
+                .setConstraints(Constraints().apply {
+                    requiredNetworkType = NetworkType.CONNECTED
+                })
+                .build()
+        }
+    }
 
     @Inject
     lateinit var cacheApi: CacheApi

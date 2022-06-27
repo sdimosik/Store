@@ -55,23 +55,8 @@ class ProductsRepositoryImpl @Inject constructor(
     override fun loadContent(forceRefresh: Boolean): List<LiveData<WorkInfo>> {
         loadWorkManager.cancelAllWork()
 
-        val inputData: Data = Data.Builder()
-            .putBoolean("anyway", forceRefresh)
-            .build()
-
-        val productListRequest = OneTimeWorkRequest.Builder(ProductListWorker::class.java)
-            .setInputData(inputData)
-            .setConstraints(Constraints().apply {
-                requiredNetworkType = NetworkType.CONNECTED
-            })
-            .build()
-
-        val detailProductsRequest = OneTimeWorkRequest.Builder(DetailProductsWorker::class.java)
-            .setInputData(inputData)
-            .setConstraints(Constraints().apply {
-                requiredNetworkType = NetworkType.CONNECTED
-            })
-            .build()
+        val productListRequest = ProductListWorker.createRequest(forceRefresh)
+        val detailProductsRequest = DetailProductsWorker.createRequest(forceRefresh)
 
         loadWorkManager.beginWith(productListRequest)
             .then(detailProductsRequest)
