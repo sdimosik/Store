@@ -13,6 +13,7 @@ dependencies {
     implementation project(":feature-products-impl")
     implementation project(":feature-add-product-api")
     implementation project(":feature-add-product-impl")
+    implementation project(":core-utils")
 
     implementation coreKtx
     implementation navigation.values()
@@ -25,6 +26,8 @@ dependencies {
     implementation glide
     implementation dagger
     implementation workerKtx
+
+    implementation view_binding_property_delegate
 
     kapt daggerCompiler
 

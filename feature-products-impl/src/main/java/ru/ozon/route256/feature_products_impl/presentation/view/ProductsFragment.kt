@@ -117,21 +117,14 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                 productNavigationApi.navigateToAddProduct(this@ProductsFragment)
             }
         }
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is BaseViewModel.State.Init -> {
-                    refreshData(false)
-                }
-                is BaseViewModel.State.Alive -> {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                            while (true) {
-                                refreshData(true)
-                                Log.d("FIRST", "repeat update")
-                                delay(10.seconds)
-                            }
-                        }
-                    }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (true) {
+                    val isForce = viewModel.state.value != BaseViewModel.State.Init
+                    refreshData(isForce)
+                    Log.d("FIRST", "repeat update")
+                    delay(10.seconds)
                 }
             }
         }
@@ -156,6 +149,7 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
     override fun onResume() {
         super.onResume()
         Log.d("FIRST", "onResume")
+        viewModel.getProductsList()
     }
 
     override fun onPause() {

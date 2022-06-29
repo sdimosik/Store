@@ -2,6 +2,11 @@ package ru.ozon.route256.core_utils
 
 import android.content.SharedPreferences
 import android.os.Parcelable
+import android.view.View
+import android.view.ViewGroup
+import androidx.transition.Fade
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 
@@ -19,4 +24,12 @@ inline fun <reified T : Parcelable?> SharedPreferences.getParcelable(key: String
     } catch (_: JsonSyntaxException) {
         default
     }
+}
+
+fun View.fadeVisibility(visibility: Int, duration: Long = 400) {
+    val transition: Transition = Fade()
+    transition.duration = duration
+    transition.addTarget(this)
+    TransitionManager.beginDelayedTransition(this.parent as ViewGroup, transition)
+    this.visibility = visibility
 }
