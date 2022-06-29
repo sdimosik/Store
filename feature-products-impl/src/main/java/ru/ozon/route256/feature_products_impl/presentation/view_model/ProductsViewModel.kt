@@ -14,17 +14,22 @@ class ProductsViewModel @Inject constructor(
     private val productsInteractor: ProductsInteractor
 ) : BaseViewModel() {
 
+    sealed class ProductState {
+        data class IsLoading(val isLoading: Boolean) : ProductState()
+    }
+
     private val _productLD = MutableLiveData<List<ProductInListUI>>()
     val productLD: LiveData<List<ProductInListUI>> = _productLD
 
+    private val _productState = MutableLiveData<ProductState>()
+    val productState: LiveData<ProductState> = _productState
+
     fun loadContent(forceRefresh: Boolean): List<LiveData<WorkInfo>> {
-        _state.postValue(State.Alive)
         return productsInteractor.loadContent(forceRefresh)
     }
 
     fun getProductsList() {
         viewModelScope.launch(handlerException) {
-            _state.postValue(State.Alive)
             _productLD.postValue(productsInteractor.getProductsList())
         }
     }
@@ -33,5 +38,13 @@ class ProductsViewModel @Inject constructor(
         viewModelScope.launch(handlerException) {
             productsInteractor.addCountView(id)
         }
+    }
+
+    fun setAlive() {
+        _state.postValue(State.Alive)
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        _productState.postValue(ProductState.IsLoading(isLoading))
     }
 }

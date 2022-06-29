@@ -6,11 +6,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.ozon.route256.core_utils.ui.BaseViewModel
 import ru.ozon.route256.feature_products_api.ProductNavigationApi
 import ru.ozon.route256.feature_products_impl.R
@@ -19,6 +24,8 @@ import ru.ozon.route256.feature_products_impl.di.ProductFeatureComponent
 import ru.ozon.route256.feature_products_impl.presentation.adapter.ProductsAdapter
 import ru.ozon.route256.feature_products_impl.presentation.view_model.ProductsViewModel
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 class ProductsFragment : Fragment(R.layout.fragment_products) {
 
@@ -57,6 +64,9 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                     }
                     if (it.state == WorkInfo.State.SUCCEEDED || it.state == WorkInfo.State.FAILED) {
                         binding.swipeContainer.isRefreshing = false
+                        if (viewModel.state.value == BaseViewModel.State.Init) {
+                            viewModel.setAlive()
+                        }
                     }
                 } else if (index == 0) {
                     if (it.state == WorkInfo.State.RUNNING) {
@@ -113,6 +123,15 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                     refreshData(false)
                 }
                 is BaseViewModel.State.Alive -> {
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                            while (true) {
+                                refreshData(true)
+                                Log.d("FIRST", "repeat update")
+                                delay(10.seconds)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -137,7 +156,6 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
     override fun onResume() {
         super.onResume()
         Log.d("FIRST", "onResume")
-        viewModel.getProductsList()
     }
 
     override fun onPause() {
