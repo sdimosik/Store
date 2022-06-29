@@ -18,3 +18,19 @@ fun AddProductDomain.toEntity(): ProductEntity =
         availableCount,
         additionalParams,
     )
+
+fun ProductEntity.toDomain(): AddProductDomain =
+    AddProductDomain(
+        guid,
+        name,
+        price,
+        description,
+        rating,
+        isFavorite,
+        isInCart,
+        images,
+        weight,
+        count,
+        availableCount,
+        additionalParams,
+    )

@@ -21,7 +21,12 @@ ext {
             dagger                        : '2.41',
             fragment                      : '1.4.1',
             gson                          : '2.8.9',
-            adapterDelegate               : '4.3.2'
+            adapterDelegate               : '4.3.2',
+            workerKtx                     : '2.7.1',
+            swipeToRefresh                : '1.1.0',
+            guava                         : '31.0.1-android',
+            guavaKotlin                   : '1.6.0',
+            callbackToFutureAdapter       : '1.1.0'
     ]
 
     navigation = ['navigarion-fragment': "androidx.navigation:navigation-fragment-ktx:${versions.navigation}",
@@ -65,5 +70,14 @@ ext {
 
     adapterDelegateDSL = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:${versions.adapterDelegate}"
     adapterDelegateViewBinding = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:${versions.adapterDelegate}"
+
+    workerKtx = "androidx.work:work-runtime-ktx:${versions.workerKtx}"
+
+    swipeToRefresh = "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swipeToRefresh}"
+
+    guava = "com.google.guava:guava:${versions.guava}"
+    guavaKotlin = "org.jetbrains.kotlinx:kotlinx-coroutines-guava:${versions.guavaKotlin}"
+    callbackToFutureAdapter = "androidx.concurrent:concurrent-futures:${versions.callbackToFutureAdapter}"
+
 
 }

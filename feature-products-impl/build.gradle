@@ -18,9 +18,17 @@ dependencies {
     implementation dagger
     implementation view_binding_property_delegate
     implementation fragment
+    implementation retrofit
+    implementation retrofitConverter
+    implementation swipeToRefresh
+    implementation guava
+    implementation guavaKotlin
+    implementation callbackToFutureAdapter
 
     implementation adapterDelegateDSL
     implementation adapterDelegateViewBinding
+
+    implementation workerKtx
 
     kapt daggerCompiler
 

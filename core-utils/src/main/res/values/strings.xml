@@ -5,4 +5,5 @@
     <string name="fragment_products">fragment_products</string>
     <string name="pdp_fragment">pdp_fragment</string>
     <string name="fragment_add_product">fragment_add_product</string>
+    <string name="no_internet_connection">No internet connection</string>
 </resources>

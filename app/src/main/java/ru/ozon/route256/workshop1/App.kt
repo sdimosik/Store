@@ -2,10 +2,11 @@ package ru.ozon.route256.workshop1
 
 import android.app.Application
 import android.content.Context
+import androidx.work.Configuration
 
-class App : Application() {
+class App : Application(), Configuration.Provider {
 
-    companion object{
+    companion object {
         @Volatile
         private lateinit var sContext: Context
 
@@ -18,10 +19,13 @@ class App : Application() {
         super.onCreate()
         sContext = this.applicationContext
 
-//        AppComponent.init(
-//            DaggerAppComponent.builder()
-//                .build()
-//        )
-//        AppComponent.get().inject(this)
+        AppComponent.init(
+            DaggerAppComponent.builder().build()
+        )
+        AppComponent.get().inject(this)
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder().build()
     }
 }

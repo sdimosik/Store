@@ -72,6 +72,7 @@ dependencies {
     implementation retrofitConverter
     implementation okhttp
     implementation dagger
+    implementation workerKtx
 
     kapt daggerCompiler
 }

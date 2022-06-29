@@ -3,10 +3,12 @@ package ru.ozon.route256.feature_add_product_impl.presentation.view
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
+import ru.ozon.route256.core_utils.ui.BaseViewModel
 import ru.ozon.route256.feature_add_product_api.AddProductNavigationApi
 import ru.ozon.route256.feature_add_product_impl.R
 import ru.ozon.route256.feature_add_product_impl.databinding.FragmentAddProductBinding
@@ -64,14 +66,30 @@ class AddProductFragment(
                 viewModel.addProduct(newProduct)
             }
         }
+
+        viewModel.action.observe(viewLifecycleOwner) { event ->
+            when (event.getContentIfNotHandled()) {
+                is BaseViewModel.Action.ShowToast -> {
+                    val textRes = (event.peekContent() as BaseViewModel.Action.ShowToast).messageRes
+                    Toast.makeText(requireContext(), textRes, Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+
+                }
+            }
+        }
     }
 
     override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onDestroy() {
         if (isRemoving){
             if (addProductNavigationApi.isFeatureClosed(this)){
                 AddProductFeatureComponent.resetComponent()
             }
         }
-        super.onPause()
+        super.onDestroy()
     }
 }

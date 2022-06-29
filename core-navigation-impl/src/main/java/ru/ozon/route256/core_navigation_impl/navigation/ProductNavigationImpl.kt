@@ -13,7 +13,7 @@ import javax.inject.Inject
 class ProductNavigationImpl @Inject constructor() : ProductNavigationApi {
 
     override fun navigateToPDP(fragment: Fragment, guid: String) {
-        FeatureInjectorProxy.initFeaturePDPDI()
+        FeatureInjectorProxy.initFeaturePDPDI(fragment.requireActivity().application)
         fragment.findNavController().navigate(
             R.id.action_fragment_products_to_PDPFragment,
             bundleOf(PDPFragment.PRODUCT_ID to guid)
@@ -21,7 +21,7 @@ class ProductNavigationImpl @Inject constructor() : ProductNavigationApi {
     }
 
     override fun navigateToAddProduct(fragment: Fragment) {
-        FeatureInjectorProxy.initFeatureAddProductDI()
+        FeatureInjectorProxy.initFeatureAddProductDI(fragment.requireActivity().application)
         fragment.findNavController().navigate(R.id.action_fragment_products_to_AddProductFragment)
     }
 

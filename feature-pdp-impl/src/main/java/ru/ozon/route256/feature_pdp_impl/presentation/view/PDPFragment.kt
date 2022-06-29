@@ -2,6 +2,7 @@ package ru.ozon.route256.feature_pdp_impl.presentation.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -47,7 +48,7 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
 
     private val imagesAdapter by lazy {
         ImagesAdapter(
-            Glide.with(this)
+            glide
         )
     }
 
@@ -58,6 +59,11 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         PDPFeatureComponent.pdpFeatureComponent?.inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("SECOND", "onCreate")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,12 +97,28 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("SECOND", "onResume")
+    }
+
     override fun onPause() {
+        super.onPause()
+        Log.d("SECOND", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("SECOND", "onStop")
+    }
+
+    override fun onDestroy() {
         if (isRemoving) {
             if (pdpNavigationApi.isFeatureClosed(this)) {
                 PDPFeatureComponent.resetComponent()
             }
         }
-        super.onPause()
+        super.onDestroy()
+        Log.d("SECOND", "onDestroy")
     }
 }

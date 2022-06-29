@@ -3,6 +3,7 @@ apply from: "$rootProject.projectDir/android-library.gradle"
 dependencies {
 
     implementation project(":core-network-api")
+    implementation project(":core-utils")
 
     implementation retrofit
     implementation retrofitConverter
