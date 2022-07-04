@@ -17,7 +17,8 @@ object FeatureInjectorProxy {
             DaggerProductFeatureComponent_ProductFeatureDependenciesComponent.builder()
                 .networkApi(CoreNetworkComponent.get(application))
                 .productNavigationApi(
-                    DaggerCoreNavigationComponent.builder().build().getProductNavigation()
+                    DaggerCoreNavigationComponent.builder().applicationContext(application).build()
+                        .getProductNavigation()
                 )
                 .storageApi(CoreStorageComponent.get(application))
                 .build()
@@ -29,7 +30,7 @@ object FeatureInjectorProxy {
             DaggerPDPFeatureComponent_PDPFeatureDependenciesComponent.builder()
                 .networkApi(CoreNetworkComponent.get(application))
                 .pDPNavigationApi(
-                    DaggerCoreNavigationComponent.builder().build().getPDPNavigation()
+                    DaggerCoreNavigationComponent.builder().applicationContext(application).build().getPDPNavigation()
                 )
                 .storageApi(CoreStorageComponent.get(application))
                 .build()
@@ -41,7 +42,7 @@ object FeatureInjectorProxy {
             DaggerAddProductFeatureComponent_AddProductFeatureDependenciesComponent.builder()
                 .networkApi(CoreNetworkComponent.get(application))
                 .addProductNavigationApi(
-                    DaggerCoreNavigationComponent.builder().build().getAddProductNavigation()
+                    DaggerCoreNavigationComponent.builder().applicationContext(application).build().getAddProductNavigation()
                 )
                 .storageApi(CoreStorageComponent.get(application))
                 .build()
