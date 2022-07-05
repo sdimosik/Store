@@ -57,7 +57,7 @@ class ProductViewHolder(
     override fun onBind(item: ProductInListUI) {
         super.onBind(item)
         with(binding) {
-            glide.load(item.image)
+            glide.load(item.image[0])
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(productIV)
 

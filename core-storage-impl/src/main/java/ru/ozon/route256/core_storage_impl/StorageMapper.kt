@@ -22,5 +22,5 @@ fun ProductEntityList.toList(): List<ProductEntity> {
 }
 
 fun ProductEntity.toProductInListEntity(): ProductInListEntity = ProductInListEntity(
-    guid, if (images.isNotEmpty()) images[0] else "", name, price, rating, isFavorite, isInCart
+    guid, images, name, price, rating, isFavorite, isInCart
 )

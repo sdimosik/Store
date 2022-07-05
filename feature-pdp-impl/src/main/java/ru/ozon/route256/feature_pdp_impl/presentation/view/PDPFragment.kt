@@ -91,7 +91,7 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
             binding.nameTV.text = it.name
             binding.priceTV.text = it.price
 
-            imagesAdapter.items = ImageItem.toList(it.images)
+            imagesAdapter.submitList(ImageItem.toList(it.images))
 
             binding.ratingView.rating = it.rating.toFloat()
         }

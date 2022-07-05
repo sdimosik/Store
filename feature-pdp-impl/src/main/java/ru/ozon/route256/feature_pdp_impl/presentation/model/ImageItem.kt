@@ -1,12 +1,14 @@
 package ru.ozon.route256.feature_pdp_impl.presentation.model
 
-import ru.ozon.route256.core_utils.ui.BaseDiffModel
+import ru.ozon.route256.core_utils.ui.adapter.ListItem
 
 data class ImageItem(
     val image: String
-) : BaseDiffModel {
-    override val id: Long
-        get() = image.hashCode().toLong()
+) : ListItem {
+
+    val id: Int by lazy {
+        image.hashCode()
+    }
 
     companion object {
         fun toList(list: List<String>): List<ImageItem> {
