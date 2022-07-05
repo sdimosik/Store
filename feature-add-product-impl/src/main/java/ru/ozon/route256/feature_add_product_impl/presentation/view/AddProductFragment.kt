@@ -2,6 +2,7 @@ package ru.ozon.route256.feature_add_product_impl.presentation.view
 
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -46,6 +47,8 @@ class AddProductFragment(
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            priceET.inputType = InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_CLASS_NUMBER
+
             addBtn.setOnClickListener {
 
                 val newProduct = AddProductUI(
@@ -85,8 +88,8 @@ class AddProductFragment(
     }
 
     override fun onDestroy() {
-        if (isRemoving){
-            if (addProductNavigationApi.isFeatureClosed(this)){
+        if (isRemoving) {
+            if (addProductNavigationApi.isFeatureClosed(this)) {
                 AddProductFeatureComponent.resetComponent()
             }
         }

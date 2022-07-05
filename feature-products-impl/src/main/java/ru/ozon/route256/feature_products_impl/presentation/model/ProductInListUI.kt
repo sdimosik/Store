@@ -1,6 +1,6 @@
 package ru.ozon.route256.feature_products_impl.presentation.model
 
-import ru.ozon.route256.core_utils.ui.BaseDiffModel
+import ru.ozon.route256.core_utils.ui.adapter.ListItem
 
 data class ProductInListUI(
     val guid: String,
@@ -11,7 +11,9 @@ data class ProductInListUI(
     val isFavorite: Boolean,
     val isInCart: Boolean,
     var countView: Int = 0
-) : BaseDiffModel {
-    override val id: Long
-        get() = guid.hashCode().toLong()
+) : ListItem {
+
+    val priceNum: Int by lazy {
+        Integer.parseInt(price)
+    }
 }

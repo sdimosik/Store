@@ -22,9 +22,9 @@ import ru.ozon.route256.feature_products_impl.R
 import ru.ozon.route256.feature_products_impl.databinding.FragmentProductsBinding
 import ru.ozon.route256.feature_products_impl.di.ProductFeatureComponent
 import ru.ozon.route256.feature_products_impl.presentation.adapter.ProductsAdapter
+import ru.ozon.route256.feature_products_impl.presentation.model.HeaderUI
 import ru.ozon.route256.feature_products_impl.presentation.view_model.ProductsViewModel
 import javax.inject.Inject
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class ProductsFragment : Fragment(R.layout.fragment_products) {
@@ -129,6 +129,20 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
             }
         }
 
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is BaseViewModel.State.Init -> {
+                    viewModel.headersList.add(HeaderUI(getString(R.string.low_price), 100))
+                    viewModel.headersList.add(
+                        HeaderUI(
+                            getString(R.string.default_price),
+                            999999999
+                        )
+                    )
+                }
+            }
+        }
+
         viewModel.action.observe(viewLifecycleOwner) { event ->
             when (event.getContentIfNotHandled()) {
                 is BaseViewModel.Action.ShowToast -> {
@@ -142,7 +156,7 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
         }
 
         viewModel.productLD.observe(viewLifecycleOwner) {
-            productsAdapter.items = it
+            productsAdapter.submitList(it)
         }
     }
 
