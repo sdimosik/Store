@@ -2,7 +2,7 @@ package ru.ozon.route256.feature_pdp_impl.presentation.model
 
 import ru.ozon.route256.core_utils.ui.adapter.ListItem
 
-data class ImageItem(
+data class ImageUI(
     val image: String
 ) : ListItem {
 
@@ -11,10 +11,10 @@ data class ImageItem(
     }
 
     companion object {
-        fun toList(list: List<String>): List<ImageItem> {
-            val new = mutableListOf<ImageItem>()
+        fun toList(list: List<String>): List<ImageUI> {
+            val new = mutableListOf<ImageUI>()
             list.forEach {
-                new.add(ImageItem(it))
+                new.add(ImageUI(it))
             }
             return new
         }

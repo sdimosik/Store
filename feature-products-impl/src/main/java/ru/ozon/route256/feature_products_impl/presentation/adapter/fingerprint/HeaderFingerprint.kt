@@ -1,4 +1,4 @@
-package ru.ozon.route256.feature_products_impl.presentation.adapter
+package ru.ozon.route256.feature_products_impl.presentation.adapter.fingerprint
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -4,7 +4,7 @@ import ru.ozon.route256.core_utils.ui.adapter.ListItem
 
 data class ProductInListUI(
     val guid: String,
-    val image: List<String>,
+    val image: List<ImageUI>,
     val name: String,
     val price: String,
     val rating: Double,

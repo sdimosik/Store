@@ -17,7 +17,7 @@ import ru.ozon.route256.feature_pdp_impl.R
 import ru.ozon.route256.feature_pdp_impl.databinding.FragmentPdpBinding
 import ru.ozon.route256.feature_pdp_impl.di.PDPFeatureComponent
 import ru.ozon.route256.feature_pdp_impl.presentation.adapter.ImagesAdapter
-import ru.ozon.route256.feature_pdp_impl.presentation.model.ImageItem
+import ru.ozon.route256.feature_pdp_impl.presentation.model.ImageUI
 import ru.ozon.route256.feature_pdp_impl.presentation.view_model.PDPViewModel
 import javax.inject.Inject
 
@@ -91,7 +91,7 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
             binding.nameTV.text = it.name
             binding.priceTV.text = it.price
 
-            imagesAdapter.submitList(ImageItem.toList(it.images))
+            imagesAdapter.submitList(ImageUI.toList(it.images))
 
             binding.ratingView.rating = it.rating.toFloat()
         }

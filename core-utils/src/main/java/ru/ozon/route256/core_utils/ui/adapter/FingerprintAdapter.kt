@@ -10,7 +10,6 @@ open class FingerprintAdapter(
 ) : ListAdapter<ListItem, BaseViewHolder<ViewBinding, ListItem>>(
     FingerprintDiffUtil(fingerprints)
 ) {
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -24,6 +23,18 @@ open class FingerprintAdapter(
 
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding, ListItem>, position: Int) {
         holder.onBind(currentList[position])
+    }
+
+    override fun onBindViewHolder(
+        holder: BaseViewHolder<ViewBinding, ListItem>,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            holder.onBind(currentList[position])
+        }
     }
 
     override fun getItemViewType(position: Int): Int {

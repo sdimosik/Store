@@ -1,4 +1,4 @@
-package ru.ozon.route256.feature_pdp_impl.presentation.adapter
+package ru.ozon.route256.feature_products_impl.presentation.adapter.fingerprint
 
 import android.app.Activity
 import android.view.LayoutInflater
@@ -9,23 +9,23 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.ozon.route256.core_utils.ui.adapter.BaseViewHolder
 import ru.ozon.route256.core_utils.ui.adapter.ItemFingerprint
 import ru.ozon.route256.core_utils.ui.adapter.ListItem
-import ru.ozon.route256.feature_pdp_impl.R
-import ru.ozon.route256.feature_pdp_impl.databinding.ImageItemBinding
-import ru.ozon.route256.feature_pdp_impl.presentation.model.ImageUI
+import ru.ozon.route256.feature_products_impl.R
+import ru.ozon.route256.feature_products_impl.databinding.ImageListItemBinding
+import ru.ozon.route256.feature_products_impl.presentation.model.ImageUI
 
 class ImageFingerprint(
-    private val glide: RequestManager
-) : ItemFingerprint<ImageItemBinding, ImageUI> {
+    private val glide: RequestManager,
+) : ItemFingerprint<ImageListItemBinding, ImageUI> {
 
     override fun isRelativeItem(item: ListItem): Boolean = item is ImageUI
 
-    override fun getLayoutId(): Int = R.layout.image_item
+    override fun getLayoutId(): Int = R.layout.image_list_item
 
     override fun getViewHolder(
         layoutInflater: LayoutInflater,
         parent: ViewGroup
-    ): BaseViewHolder<ImageItemBinding, ImageUI> {
-        val binding = ImageItemBinding.inflate(layoutInflater, parent, false)
+    ): BaseViewHolder<ImageListItemBinding, ImageUI> {
+        val binding = ImageListItemBinding.inflate(layoutInflater, parent, false)
         return ImageViewHolder(binding, glide)
     }
 
@@ -42,10 +42,9 @@ class ImageFingerprint(
 }
 
 class ImageViewHolder(
-    binding: ImageItemBinding,
-    private val glide: RequestManager
-) : BaseViewHolder<ImageItemBinding, ImageUI>(binding) {
-
+    binding: ImageListItemBinding,
+    private val glide: RequestManager,
+) : BaseViewHolder<ImageListItemBinding, ImageUI>(binding) {
 
     override fun onBind(item: ImageUI) {
         super.onBind(item)

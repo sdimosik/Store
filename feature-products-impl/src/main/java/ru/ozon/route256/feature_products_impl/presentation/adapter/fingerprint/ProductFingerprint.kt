@@ -1,21 +1,23 @@
-package ru.ozon.route256.feature_products_impl.presentation.adapter
+package ru.ozon.route256.feature_products_impl.presentation.adapter.fingerprint
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.ozon.route256.core_utils.ui.adapter.BaseViewHolder
 import ru.ozon.route256.core_utils.ui.adapter.ItemFingerprint
 import ru.ozon.route256.core_utils.ui.adapter.ListItem
 import ru.ozon.route256.feature_products_impl.R
 import ru.ozon.route256.feature_products_impl.databinding.ProductListItemBinding
+import ru.ozon.route256.feature_products_impl.presentation.adapter.ImageAdapter
 import ru.ozon.route256.feature_products_impl.presentation.model.ProductInListUI
 
 class ProductFingerprint(
     private val glide: RequestManager,
-    private val onClick: (ProductInListUI) -> Unit
+    private val onClick: (ProductInListUI) -> Unit,
+    private val sharedViewPool: RecyclerView.RecycledViewPool
 ) : ItemFingerprint<ProductListItemBinding, ProductInListUI> {
 
     override fun isRelativeItem(item: ListItem): Boolean = item is ProductInListUI
@@ -27,7 +29,7 @@ class ProductFingerprint(
         parent: ViewGroup
     ): BaseViewHolder<ProductListItemBinding, ProductInListUI> {
         val binding = ProductListItemBinding.inflate(layoutInflater, parent, false)
-        return ProductViewHolder(binding, glide, onClick)
+        return ProductViewHolder(binding, glide, sharedViewPool, onClick)
     }
 
     override fun getDiffUtil(): DiffUtil.ItemCallback<ProductInListUI> = diffUtil
@@ -39,38 +41,52 @@ class ProductFingerprint(
 
         override fun areContentsTheSame(oldItem: ProductInListUI, newItem: ProductInListUI) =
             oldItem == newItem
+
+        override fun getChangePayload(oldItem: ProductInListUI, newItem: ProductInListUI): Any? {
+            if (oldItem.countView != newItem.countView) return newItem.countView
+            return super.getChangePayload(oldItem, newItem)
+        }
     }
 }
 
 class ProductViewHolder(
     binding: ProductListItemBinding,
     private val glide: RequestManager,
+    private val sharedViewPool: RecyclerView.RecycledViewPool,
     private val onClick: (ProductInListUI) -> Unit
 ) : BaseViewHolder<ProductListItemBinding, ProductInListUI>(binding) {
+
+    private val imageAdapter = ImageAdapter(glide)
+    private val snapHelper = PagerSnapHelper()
 
     init {
         binding.root.setOnClickListener {
             onClick(item)
+        }
+
+        binding.productRV.apply {
+            adapter = imageAdapter
+            setHasFixedSize(true)
+            setRecycledViewPool(sharedViewPool)
         }
     }
 
     override fun onBind(item: ProductInListUI) {
         super.onBind(item)
         with(binding) {
-            glide.load(item.image[0])
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(productIV)
-
             nameTV.text = item.name
             priceTV.text = item.price
             ratingView.rating = item.rating.toFloat()
             countViewTV.text = item.countView.toString()
+
+            snapHelper.attachToRecyclerView(productRV)
+            imageAdapter.submitList(item.image)
         }
     }
 
-    override fun onViewRecycled() {
-        if ((binding.productIV.context as? Activity)?.isDestroyed?.not() == true) {
-            glide.clear(binding.productIV)
-        }
+    override fun onBind(item: ProductInListUI, payloads: List<Any>) {
+        super.onBind(item, payloads)
+        val countView = payloads.last() as Int
+        binding.countViewTV.text = countView.toString()
     }
 }

@@ -17,6 +17,12 @@ class FingerprintDiffUtil(
         return getListItemCallback(oldListItem).areContentsTheSame(oldListItem, newListItem)
     }
 
+    override fun getChangePayload(oldItem: ListItem, newItem: ListItem): Any? {
+        if (oldItem::class != newItem::class) return false
+
+        return getListItemCallback(oldItem).getChangePayload(oldItem, newItem)
+    }
+
     private fun getListItemCallback(
         item: ListItem
     ): DiffUtil.ItemCallback<ListItem> = fingerprints.find { it.isRelativeItem(item) }
