@@ -69,6 +69,8 @@ class ProductViewHolder(
             setHasFixedSize(true)
             setRecycledViewPool(sharedViewPool)
         }
+
+        snapHelper.attachToRecyclerView(binding.productRV)
     }
 
     override fun onBind(item: ProductInListUI) {
@@ -78,8 +80,6 @@ class ProductViewHolder(
             priceTV.text = item.price
             ratingView.rating = item.rating.toFloat()
             countViewTV.text = item.countView.toString()
-
-            snapHelper.attachToRecyclerView(productRV)
             imageAdapter.submitList(item.image)
         }
     }

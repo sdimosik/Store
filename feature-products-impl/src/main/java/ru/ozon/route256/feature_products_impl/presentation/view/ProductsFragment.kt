@@ -111,7 +111,10 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                 }
             })
 
-            frgProductsRecycler.adapter = productsAdapter
+            frgProductsRecycler.apply {
+                adapter = productsAdapter
+                setItemViewCacheSize(30)
+            }
 
             btnAddProduct.setOnClickListener {
                 productNavigationApi.navigateToAddProduct(this@ProductsFragment)
