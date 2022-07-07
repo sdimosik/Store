@@ -17,6 +17,7 @@ import ru.ozon.route256.feature_products_impl.presentation.model.ProductInListUI
 class ProductFingerprint(
     private val glide: RequestManager,
     private val onClick: (ProductInListUI) -> Unit,
+    private val onClickBuy: (ProductInListUI) -> Unit,
     private val sharedViewPool: RecyclerView.RecycledViewPool
 ) : ItemFingerprint<ProductListItemBinding, ProductInListUI> {
 
@@ -29,7 +30,7 @@ class ProductFingerprint(
         parent: ViewGroup
     ): BaseViewHolder<ProductListItemBinding, ProductInListUI> {
         val binding = ProductListItemBinding.inflate(layoutInflater, parent, false)
-        return ProductViewHolder(binding, glide, sharedViewPool, onClick)
+        return ProductViewHolder(binding, glide, sharedViewPool, onClick, onClickBuy)
     }
 
     override fun getDiffUtil(): DiffUtil.ItemCallback<ProductInListUI> = diffUtil
@@ -44,6 +45,7 @@ class ProductFingerprint(
 
         override fun getChangePayload(oldItem: ProductInListUI, newItem: ProductInListUI): Any? {
             if (oldItem.countView != newItem.countView) return newItem.countView
+            if (oldItem.isInCart != newItem.isInCart) return newItem.isInCart
             return super.getChangePayload(oldItem, newItem)
         }
     }
@@ -53,7 +55,8 @@ class ProductViewHolder(
     binding: ProductListItemBinding,
     private val glide: RequestManager,
     private val sharedViewPool: RecyclerView.RecycledViewPool,
-    private val onClick: (ProductInListUI) -> Unit
+    private val onClick: (ProductInListUI) -> Unit,
+    private val onClickBuy: (ProductInListUI) -> Unit
 ) : BaseViewHolder<ProductListItemBinding, ProductInListUI>(binding) {
 
     private val imageAdapter = ImageAdapter(glide)
@@ -62,6 +65,11 @@ class ProductViewHolder(
     init {
         binding.root.setOnClickListener {
             onClick(item)
+        }
+
+        binding.buyButton.setOnClickListener {
+            binding.buyButton.setLoading(true)
+            onClickBuy(item)
         }
 
         binding.productRV.apply {
@@ -81,12 +89,36 @@ class ProductViewHolder(
             ratingView.rating = item.rating.toFloat()
             countViewTV.text = item.countView.toString()
             imageAdapter.submitList(item.image)
+            buyButton.setText(
+                if (item.isInCart) {
+                    "In cart"
+                } else {
+                    "Add to cart"
+                }
+            )
+            buyButton.setIsTouched(item.isInCart)
+            buyButton.setLoading(false)
         }
     }
 
     override fun onBind(item: ProductInListUI, payloads: List<Any>) {
         super.onBind(item, payloads)
-        val countView = payloads.last() as Int
-        binding.countViewTV.text = countView.toString()
+        with(binding) {
+            if (payloads.last() is Int) {
+                val countView = payloads.last() as Int
+                countViewTV.text = countView.toString()
+            } else if (payloads.last() is Boolean) {
+                val inCart = payloads.last() as Boolean
+                buyButton.setText(
+                    if (inCart) {
+                        "In cart"
+                    } else {
+                        "Add to cart"
+                    }
+                )
+                buyButton.setIsTouched(item.isInCart)
+                buyButton.setLoading(false)
+            }
+        }
     }
 }

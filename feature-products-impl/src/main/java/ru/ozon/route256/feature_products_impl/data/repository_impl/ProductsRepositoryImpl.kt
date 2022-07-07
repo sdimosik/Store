@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.work.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import ru.ozon.route256.core_network_api.ProductApi
 import ru.ozon.route256.core_storage_api.CacheApi
+import ru.ozon.route256.core_storage_api.model.InCartGuidEntity
 import ru.ozon.route256.feature_products_impl.data.mapper.toDomain
 import ru.ozon.route256.feature_products_impl.domain.model.ProductInListDomain
 import ru.ozon.route256.feature_products_impl.domain.repository.ProductsRepository
@@ -66,5 +68,23 @@ class ProductsRepositoryImpl @Inject constructor(
             loadWorkManager.getWorkInfoByIdLiveData(productListRequest.id),
             loadWorkManager.getWorkInfoByIdLiveData(detailProductsRequest.id)
         )
+    }
+
+    override suspend fun updateProductItemInList(toDomain: ProductInListDomain) {
+        withContext(Dispatchers.IO) {
+            val isInCart = toDomain.isInCart
+            val currentId = toDomain.guid
+            val cartProduct = cacheApi.getInCart()?.toMutableList() ?: mutableListOf()
+
+            val productId = cartProduct.find { it.guid == currentId }
+            if (isInCart && productId != null) {
+                cartProduct.remove(productId)
+            } else if (!isInCart && productId == null) {
+                cartProduct.add(InCartGuidEntity(currentId))
+            }
+
+            delay(400)
+            cacheApi.updateInCart(cartProduct)
+        }
     }
 }

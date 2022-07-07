@@ -45,7 +45,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
             android:maxLines="1"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buy_button"
             app:layout_constraintStart_toEndOf="@id/productRV"
             app:layout_constraintTop_toBottomOf="@id/nameTV"
             tools:text="15P" />
@@ -71,6 +71,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="1337" />
+
+        <ru.ozon.route256.core_utils.ui.custom.ProgressButton
+            android:id="@+id/buy_button"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="2dp"
+            app:enabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:textSize="4sp"
+            tools:text="In cart" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

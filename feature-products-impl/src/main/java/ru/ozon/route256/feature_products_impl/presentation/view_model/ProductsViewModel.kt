@@ -17,7 +17,7 @@ class ProductsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     sealed class ProductState {
-        data class IsLoading(val isLoading: Boolean) : ProductState()
+        object NeedToSyncWithCache : ProductState()
     }
 
     private val _productLD = MutableLiveData<List<ListItem>>()
@@ -49,10 +49,6 @@ class ProductsViewModel @Inject constructor(
         _state.postValue(State.Alive)
     }
 
-    private fun setLoading(isLoading: Boolean) {
-        _productState.postValue(ProductState.IsLoading(isLoading))
-    }
-
     private fun sortingAndAddingHeaders(list: List<ProductInListUI>): List<ListItem> {
         var currentIndex = 0
         val newList = mutableListOf<ListItem>()
@@ -69,6 +65,13 @@ class ProductsViewModel @Inject constructor(
                 newList.add(product)
             }
         return newList
+    }
+
+    fun addOrRemoveInCart(product: ProductInListUI) {
+        viewModelScope.launch(handlerException) {
+            productsInteractor.updateProductItemInList(product)
+            _productState.postValue(ProductState.NeedToSyncWithCache)
+        }
     }
 
 

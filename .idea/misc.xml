@@ -10,8 +10,14 @@
         <entry key="..\:/AndroidProjects/homework-2/app/src/main/res/layout/pdp_fragment.xml" value="0.14375" />
         <entry key="..\:/AndroidProjects/homework-2/app/src/main/res/layout/product_list_item.xml" value="0.4466666666666667" />
         <entry key="..\:/AndroidProjects/homework-2/core-navigation-impl/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/AndroidProjects/homework-2/core-utils/src/main/res/drawable/black_button_text_color_selector.xml" value="0.3905" />
+        <entry key="..\:/AndroidProjects/homework-2/core-utils/src/main/res/drawable/button_black_bg_selector.xml" value="0.3905" />
+        <entry key="..\:/AndroidProjects/homework-2/core-utils/src/main/res/drawable/button_black_shape.xml" value="0.3905" />
         <entry key="..\:/AndroidProjects/homework-2/core-utils/src/main/res/drawable/drawable.xml" value="0.2765" />
         <entry key="..\:/AndroidProjects/homework-2/core-utils/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2765" />
+        <entry key="..\:/AndroidProjects/homework-2/core-utils/src/main/res/drawable/progress_button_black.xml" value="0.3905" />
+        <entry key="..\:/AndroidProjects/homework-2/core-utils/src/main/res/layout/progress_bar.xml" value="0.4" />
+        <entry key="..\:/AndroidProjects/homework-2/core-utils/src/main/res/layout/progress_button.xml" value="0.4" />
         <entry key="..\:/AndroidProjects/homework-2/feature-add-product-impl/src/main/res/layout/fragment_add_product.xml" value="0.20104166666666667" />
         <entry key="..\:/AndroidProjects/homework-2/feature-pdp-impl/src/main/res/layout/fragment_pdp.xml" value="0.2" />
         <entry key="..\:/AndroidProjects/homework-2/feature-pdp-impl/src/main/res/layout/image_item.xml" value="0.209375" />
@@ -20,6 +26,7 @@
         <entry key="..\:/AndroidProjects/homework-2/feature-products-impl/src/main/res/layout/image_item.xml" value="0.4" />
         <entry key="..\:/AndroidProjects/homework-2/feature-products-impl/src/main/res/layout/image_list_item.xml" value="0.39895833333333336" />
         <entry key="..\:/AndroidProjects/homework-2/feature-products-impl/src/main/res/layout/product_list_item.xml" value="0.29921875" />
+        <entry key="..\:/AndroidProjects/homework-2/feature-products-impl/src/main/res/layout/progress_button.xml" value="0.39895833333333336" />
       </map>
     </option>
   </component>

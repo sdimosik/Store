@@ -8,4 +8,5 @@ interface ProductsInteractor {
     suspend fun getProductsList(): List<ProductInListUI>
     suspend fun addCountView(id: String?)
     fun loadContent(forceRefresh: Boolean): List<LiveData<WorkInfo>>
+    suspend fun updateProductItemInList(product: ProductInListUI)
 }

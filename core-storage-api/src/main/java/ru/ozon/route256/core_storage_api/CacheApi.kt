@@ -1,5 +1,7 @@
 package ru.ozon.route256.core_storage_api
 
+import ru.ozon.route256.core_storage_api.model.InCartGuidEntity
+import ru.ozon.route256.core_storage_api.model.InCartGuidListEntity
 import ru.ozon.route256.core_storage_api.model.ProductEntity
 import ru.ozon.route256.core_storage_api.model.ProductInListEntity
 
@@ -24,4 +26,8 @@ interface CacheApi {
     suspend fun getAddCacheProducts(): List<ProductEntity>?
 
     suspend fun addProduct(product: ProductEntity)
+
+    suspend fun updateInCart(list: List<InCartGuidEntity>)
+
+    suspend fun getInCart(): List<InCartGuidEntity>?
 }

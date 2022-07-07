@@ -3,10 +3,7 @@ package ru.ozon.route256.core_storage_impl.data
 import android.content.Context
 import androidx.core.content.edit
 import ru.ozon.route256.core_storage_api.CacheApi
-import ru.ozon.route256.core_storage_api.model.ProductEntity
-import ru.ozon.route256.core_storage_api.model.ProductEntityList
-import ru.ozon.route256.core_storage_api.model.ProductInListEntity
-import ru.ozon.route256.core_storage_api.model.ProductInListEntityList
+import ru.ozon.route256.core_storage_api.model.*
 import ru.ozon.route256.core_storage_impl.toList
 import ru.ozon.route256.core_storage_impl.toProductInListEntity
 import ru.ozon.route256.core_utils.Utils
@@ -26,6 +23,8 @@ class CacheApiImpl @Inject constructor(
 
         private const val CACHE_PRODUCT_LIST_ADD = "CACHE_PRODUCT_LIST_ADD"
         private const val CACHE_PRODUCTS_ADD = "CACHE_PRODUCTS_ADD"
+
+        private const val CACHE_PRODUCT_GUID_IN_CART = "CACHE_PRODUCT_GUID_IN_CART"
     }
 
     override suspend fun updateCacheProductList(list: List<ProductInListEntity>) {
@@ -43,10 +42,15 @@ class CacheApiImpl @Inject constructor(
                     null
                 )?.toList()
         val secondCache = getAddCacheProductList()?.toList()
+        val inCartMap = getInCart()?.toList()?.associate { it.guid to true }
         return if (mainCache == null && secondCache == null) {
             null
         } else {
-            (mainCache ?: mutableListOf()).plus(secondCache ?: mutableListOf())
+            val result = (mainCache ?: mutableListOf()).plus(secondCache ?: mutableListOf())
+            result.forEach { product ->
+                product.isInCart = inCartMap?.get(product.guid) == true
+            }
+            result
         }
     }
 
@@ -123,5 +127,20 @@ class CacheApiImpl @Inject constructor(
             putParcelable(CACHE_PRODUCT_LIST_ADD, ProductInListEntityList(cache_product_list))
             putParcelable(CACHE_PRODUCTS_ADD, ProductEntityList(cache_products))
         }
+    }
+
+    override suspend fun updateInCart(list: List<InCartGuidEntity>) {
+        val data = InCartGuidListEntity(list)
+        context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE).edit {
+            putParcelable(CACHE_PRODUCT_GUID_IN_CART, data)
+        }
+    }
+
+    override suspend fun getInCart(): List<InCartGuidEntity>? {
+        return context.getSharedPreferences(Utils.APP_PREFERENCES_NAME, Context.MODE_PRIVATE)
+            .getParcelable<InCartGuidListEntity?>(
+                CACHE_PRODUCT_GUID_IN_CART,
+                null
+            )?.toList()
     }
 }

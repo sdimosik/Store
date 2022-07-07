@@ -8,4 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
+
+    <color name="gray_secondary_text">#616060</color>
+    <color name="buttons_black_pressed">#FFBB86FC</color>
+    <color name="buttons_black_disabled">#3CCF23</color>
+
+    <color name="stateOneBackgroundColor">#FFBB86FC</color>
+    <color name="stateTwoBackground">#EEE7F8</color>
+    <color name="stateOneTextColor">#000000</color>
+    <color name="stateTwoTextColor">#000000</color>
 </resources>

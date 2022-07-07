@@ -47,11 +47,15 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
 
     private val productsAdapter by lazy {
         ProductsAdapter(
-            Glide.with(this)
-        ) {
-            viewModel.addCountView(it.guid)
-            productNavigationApi.navigateToPDP(this, it.guid)
-        }
+            glide = Glide.with(this),
+            onClick = { product ->
+                viewModel.addCountView(product.guid)
+                productNavigationApi.navigateToPDP(this, product.guid)
+            },
+            onClickBuy = { product ->
+                viewModel.addOrRemoveInCart(product)
+            }
+        )
     }
 
     private fun refreshData(forceRefresh: Boolean) {
@@ -127,7 +131,15 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                     val isForce = viewModel.state.value != BaseViewModel.State.Init
                     refreshData(isForce)
                     Log.d("FIRST", "repeat update")
-                    delay(10.seconds)
+                    delay(1200.seconds)
+                }
+            }
+        }
+
+        viewModel.productState.observe(viewLifecycleOwner) { productState ->
+            when (productState) {
+                is ProductsViewModel.ProductState.NeedToSyncWithCache -> {
+                    viewModel.getProductsList()
                 }
             }
         }
