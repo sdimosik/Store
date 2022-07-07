@@ -57,6 +57,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/priceTV" />
 
+
+        <ru.ozon.route256.core_utils.ui.custom.CountButton
+            android:id="@+id/count_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="2dp"
+            app:textA="In cart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:textSize="4sp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

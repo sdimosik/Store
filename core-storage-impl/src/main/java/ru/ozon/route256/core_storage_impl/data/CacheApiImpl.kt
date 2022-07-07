@@ -42,13 +42,14 @@ class CacheApiImpl @Inject constructor(
                     null
                 )?.toList()
         val secondCache = getAddCacheProductList()?.toList()
-        val inCartMap = getInCart()?.toList()?.associate { it.guid to true }
+        val inCartMap = getInCart()?.toList()?.associate { it.guid to it.count }
         return if (mainCache == null && secondCache == null) {
             null
         } else {
             val result = (mainCache ?: mutableListOf()).plus(secondCache ?: mutableListOf())
             result.forEach { product ->
-                product.isInCart = inCartMap?.get(product.guid) == true
+                val count = inCartMap?.get(product.guid)
+                product.isInCart = count != null && count > 0
             }
             result
         }

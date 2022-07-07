@@ -87,14 +87,25 @@ class PDPFragment() : Fragment(R.layout.fragment_pdp) {
             }
         }
 
-        viewModel.productLD.observe(viewLifecycleOwner) {
-            binding.nameTV.text = it.name
-            binding.priceTV.text = it.price
-
-            imagesAdapter.submitList(ImageUI.toList(it.images))
-
-            binding.ratingView.rating = it.rating.toFloat()
+        viewModel.count.observe(viewLifecycleOwner) {
+            binding.countButton.setCount(it)
         }
+
+        viewModel.productLD.observe(viewLifecycleOwner) { product ->
+            binding.nameTV.text = product.name
+            binding.priceTV.text = product.price
+
+            binding.countButton.setPrice(Integer.parseInt(product.price))
+            binding.countButton.setCallback { count ->
+                viewModel.updateCountInCart(product.guid, count)
+            }
+            viewModel.getCartCount(product.guid)
+
+            imagesAdapter.submitList(ImageUI.toList(product.images))
+
+            binding.ratingView.rating = product.rating.toFloat()
+        }
+
     }
 
     override fun onResume() {

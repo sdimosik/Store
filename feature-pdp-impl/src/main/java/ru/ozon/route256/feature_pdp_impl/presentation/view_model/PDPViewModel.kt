@@ -17,11 +17,28 @@ class PDPViewModel @Inject constructor(
     private val _productLD = MutableLiveData<ProductUI>()
     val productLD: LiveData<ProductUI> = _productLD
 
+    private val _count = MutableLiveData<Int>()
+    val count: LiveData<Int> = _count
+
     fun getProductById(guid: String?) {
         viewModelScope.launch(handlerException) {
             _productLD.postValue(guid?.let {
                 pdpInteractor.getProductById(it)
             })
+        }
+    }
+
+    fun getCartCount(guid: String?) {
+        viewModelScope.launch(handlerException) {
+            _count.postValue(
+                pdpInteractor.getCartCount(guid)
+            )
+        }
+    }
+
+    fun updateCountInCart(guid: String?, count: Int) {
+        viewModelScope.launch(handlerException) {
+            pdpInteractor.updateCountInCart(guid, count)
         }
     }
 }

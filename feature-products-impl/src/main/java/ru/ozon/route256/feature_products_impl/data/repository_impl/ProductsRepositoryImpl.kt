@@ -80,7 +80,7 @@ class ProductsRepositoryImpl @Inject constructor(
             if (isInCart && productId != null) {
                 cartProduct.remove(productId)
             } else if (!isInCart && productId == null) {
-                cartProduct.add(InCartGuidEntity(currentId))
+                cartProduct.add(InCartGuidEntity(currentId, 1))
             }
 
             delay(400)

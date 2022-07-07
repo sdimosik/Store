@@ -11,4 +11,14 @@
         <attr name="stateOneTextColor" format="color" />
         <attr name="stateTwoTextColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="CountButton">
+        <attr name="textA" format="string" />
+        <attr name="textSizeA" format="dimension" />
+        <attr name="stateOneBackgroundA" format="color" />
+        <attr name="stateTwoBackgroundA" format="color" />
+        <attr name="stateOneTextColorA" format="color" />
+        <attr name="stateTwoTextColorA" format="color" />
+    </declare-styleable>
+
 </resources>

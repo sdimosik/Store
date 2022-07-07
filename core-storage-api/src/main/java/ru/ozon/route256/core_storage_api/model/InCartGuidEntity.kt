@@ -5,5 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class InCartGuidEntity(
-    var guid: String
+    var guid: String,
+    var count: Int
 ) : Parcelable
