@@ -64,6 +64,7 @@ class ProgressButton @JvmOverloads constructor(
 
         arr.recycle()
         setIsTouched(isTouched)
+
         isEnabled = enabled
         buttonTextView.isEnabled = enabled
         setText(buttonText)
@@ -74,21 +75,21 @@ class ProgressButton @JvmOverloads constructor(
         this.isTouched = isTouched
         if (isTouched) {
             container.setBackgroundColor(context.getColor(stateTwoBackground))
-            buttonTextView.setTextColor(buttonTextView.context.getColorStateList(stateTwoTextColor))
+            buttonTextView.setTextColor(context.getColorStateList(stateTwoTextColor))
         } else {
             container.setBackgroundColor(context.getColor(stateOneBackground))
-            buttonTextView.setTextColor(buttonTextView.context.getColorStateList(stateOneTextColor))
+            buttonTextView.setTextColor(context.getColorStateList(stateOneTextColor))
         }
     }
 
     fun setLoading(loading: Boolean) {
         isClickable = !loading //Disable clickable when loading
         if (loading) {
-            buttonTextView.fadeVisibility(View.GONE, 0)
-            progressBar.fadeVisibility(View.VISIBLE, 0)
+            buttonTextView.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
         } else {
-            buttonTextView.fadeVisibility(View.VISIBLE, 1000)
-            progressBar.fadeVisibility(View.GONE, 1000)
+            buttonTextView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
         }
     }
 
