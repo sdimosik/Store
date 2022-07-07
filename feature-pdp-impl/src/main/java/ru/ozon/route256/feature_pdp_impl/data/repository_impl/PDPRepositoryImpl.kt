@@ -1,5 +1,6 @@
 package ru.ozon.route256.feature_pdp_impl.data.repository_impl
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.ozon.route256.core_network_api.ProductApi
@@ -29,11 +30,12 @@ class PDPRepositoryImpl @Inject constructor(
 
     override suspend fun updateCountInCart(guid: String?, count: Int) =
         withContext(Dispatchers.IO) {
+            Log.d("PDPRep", "$guid count: $count")
             val list = cacheApi.getInCart() ?: mutableListOf()
             list.forEach {
                 if (it.guid == guid) {
                     it.count = count
-                    return@withContext
+                    return@forEach
                 }
             }
             cacheApi.updateInCart(list)

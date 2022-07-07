@@ -1,6 +1,7 @@
 package ru.ozon.route256.core_storage_impl.data
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.edit
 import ru.ozon.route256.core_storage_api.CacheApi
 import ru.ozon.route256.core_storage_api.model.*
@@ -49,7 +50,9 @@ class CacheApiImpl @Inject constructor(
             val result = (mainCache ?: mutableListOf()).plus(secondCache ?: mutableListOf())
             result.forEach { product ->
                 val count = inCartMap?.get(product.guid)
-                product.isInCart = count != null && count > 0
+                val newIsInChart = count != null && count > 0
+                Log.d("", "newIsInChart: $newIsInChart")
+                product.isInCart = newIsInChart
             }
             result
         }

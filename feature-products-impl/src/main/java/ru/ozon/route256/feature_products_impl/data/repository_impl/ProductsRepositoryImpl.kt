@@ -75,12 +75,21 @@ class ProductsRepositoryImpl @Inject constructor(
             val isInCart = toDomain.isInCart
             val currentId = toDomain.guid
             val cartProduct = cacheApi.getInCart()?.toMutableList() ?: mutableListOf()
+            var neededIndex: Int? = null
 
-            val productId = cartProduct.find { it.guid == currentId }
-            if (isInCart && productId != null) {
-                cartProduct.remove(productId)
-            } else if (!isInCart && productId == null) {
+            cartProduct.forEachIndexed { index, inCartGuidEntity ->
+                if (inCartGuidEntity.guid == currentId) {
+                    neededIndex = index
+                    return@forEachIndexed
+                }
+            }
+
+            if (isInCart && neededIndex != null) {
+                cartProduct[neededIndex!!].count = 0
+            } else if (!isInCart && neededIndex == null) {
                 cartProduct.add(InCartGuidEntity(currentId, 1))
+            } else {
+                cartProduct[neededIndex!!].count = 1
             }
 
             delay(400)
