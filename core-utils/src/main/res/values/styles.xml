@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Recycler.Default" parent="Widget.AppCompat.ListView">
         <item name="android:clipToPadding">false</item>
     </style>
@@ -23,4 +24,5 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
     </style>
+
 </resources>

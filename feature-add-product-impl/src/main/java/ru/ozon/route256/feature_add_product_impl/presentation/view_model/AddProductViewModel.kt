@@ -15,6 +15,11 @@ class AddProductViewModel @Inject constructor(
 
     fun addProduct(newProduct: AddProductUI) {
         viewModelScope.launch {
+            if (newProduct.price.isEmpty()) {
+                _action.postValue(Action.ShowToast(R.string.wrong_parameters).asEvent())
+                return@launch
+            }
+
             if (addProductInteractor.getProductById(newProduct.guid) == null) {
                 addProductInteractor.addProduct(newProduct.toDomain())
                 _action.postValue(Action.ShowToast(R.string.ok).asEvent())

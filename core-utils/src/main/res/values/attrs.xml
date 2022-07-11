@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProgressButton">
+        <attr name="text" format="string" />
+        <attr name="textSize" format="dimension" />
+        <attr name="loading" format="boolean" />
+        <attr name="enabled" format="boolean" />
+        <attr name="isTouched" format="boolean" />
+        <attr name="stateOneBackground" format="color" />
+        <attr name="stateTwoBackground" format="color" />
+        <attr name="stateOneTextColor" format="color" />
+        <attr name="stateTwoTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="CountButton">
+        <attr name="textA" format="string" />
+        <attr name="textSizeA" format="dimension" />
+        <attr name="stateOneBackgroundA" format="color" />
+        <attr name="stateTwoBackgroundA" format="color" />
+        <attr name="stateOneTextColorA" format="color" />
+        <attr name="stateTwoTextColorA" format="color" />
+    </declare-styleable>
+
+</resources>

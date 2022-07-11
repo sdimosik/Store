@@ -1,4 +1,4 @@
-package ru.ozon.route256.core_utils.ui
+package ru.ozon.route256.core_utils.ui.adapter
 
 interface BaseDiffModel {
     val id: Long

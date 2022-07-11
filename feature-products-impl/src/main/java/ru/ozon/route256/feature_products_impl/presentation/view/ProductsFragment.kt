@@ -22,9 +22,9 @@ import ru.ozon.route256.feature_products_impl.R
 import ru.ozon.route256.feature_products_impl.databinding.FragmentProductsBinding
 import ru.ozon.route256.feature_products_impl.di.ProductFeatureComponent
 import ru.ozon.route256.feature_products_impl.presentation.adapter.ProductsAdapter
+import ru.ozon.route256.feature_products_impl.presentation.model.HeaderUI
 import ru.ozon.route256.feature_products_impl.presentation.view_model.ProductsViewModel
 import javax.inject.Inject
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class ProductsFragment : Fragment(R.layout.fragment_products) {
@@ -47,11 +47,15 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
 
     private val productsAdapter by lazy {
         ProductsAdapter(
-            Glide.with(this)
-        ) {
-            viewModel.addCountView(it.guid)
-            productNavigationApi.navigateToPDP(this, it.guid)
-        }
+            glide = Glide.with(this),
+            onClick = { product ->
+                viewModel.addCountView(product.guid)
+                productNavigationApi.navigateToPDP(this, product.guid)
+            },
+            onClickBuy = { product ->
+                viewModel.addOrRemoveInCart(product)
+            }
+        )
     }
 
     private fun refreshData(forceRefresh: Boolean) {
@@ -111,7 +115,10 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                 }
             })
 
-            frgProductsRecycler.adapter = productsAdapter
+            frgProductsRecycler.apply {
+                adapter = productsAdapter
+                setItemViewCacheSize(30)
+            }
 
             btnAddProduct.setOnClickListener {
                 productNavigationApi.navigateToAddProduct(this@ProductsFragment)
@@ -124,7 +131,29 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                     val isForce = viewModel.state.value != BaseViewModel.State.Init
                     refreshData(isForce)
                     Log.d("FIRST", "repeat update")
-                    delay(10.seconds)
+                    delay(1200.seconds)
+                }
+            }
+        }
+
+        viewModel.productState.observe(viewLifecycleOwner) { productState ->
+            when (productState) {
+                is ProductsViewModel.ProductState.NeedToSyncWithCache -> {
+                    viewModel.getProductsList()
+                }
+            }
+        }
+
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is BaseViewModel.State.Init -> {
+                    viewModel.headersList.add(HeaderUI(getString(R.string.low_price), 100))
+                    viewModel.headersList.add(
+                        HeaderUI(
+                            getString(R.string.default_price),
+                            999999999
+                        )
+                    )
                 }
             }
         }
@@ -142,7 +171,7 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
         }
 
         viewModel.productLD.observe(viewLifecycleOwner) {
-            productsAdapter.items = it
+            productsAdapter.submitList(it)
         }
     }
 

@@ -1,6 +1,6 @@
 package ru.ozon.route256.core_network_api.model
 
-class ProductDTO (
+class ProductDTO(
     val guid: String,
     val name: String,
     val price: String,

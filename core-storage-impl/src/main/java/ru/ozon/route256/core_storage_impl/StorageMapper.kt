@@ -1,9 +1,6 @@
 package ru.ozon.route256.core_storage_impl
 
-import ru.ozon.route256.core_storage_api.model.ProductEntity
-import ru.ozon.route256.core_storage_api.model.ProductEntityList
-import ru.ozon.route256.core_storage_api.model.ProductInListEntity
-import ru.ozon.route256.core_storage_api.model.ProductInListEntityList
+import ru.ozon.route256.core_storage_api.model.*
 
 fun ProductInListEntityList.toList(): List<ProductInListEntity> {
     val list = mutableListOf<ProductInListEntity>()
@@ -21,6 +18,14 @@ fun ProductEntityList.toList(): List<ProductEntity> {
     return list
 }
 
+fun InCartGuidListEntity.toList(): List<InCartGuidEntity> {
+    val list = mutableListOf<InCartGuidEntity>()
+    this.list.forEach {
+        list.add(it)
+    }
+    return list
+}
+
 fun ProductEntity.toProductInListEntity(): ProductInListEntity = ProductInListEntity(
-    guid, if (images.isNotEmpty()) images[0] else "", name, price, rating, isFavorite, isInCart
+    guid, images, name, price, rating, isFavorite, isInCart
 )

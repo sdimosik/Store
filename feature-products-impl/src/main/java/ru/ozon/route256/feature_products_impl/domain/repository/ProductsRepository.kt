@@ -11,4 +11,5 @@ interface ProductsRepository {
     suspend fun getProducts(): List<ProductInListDomain>
     suspend fun addCountView(id: String?)
     fun loadContent(forceRefresh: Boolean): List<LiveData<WorkInfo>>
+    suspend fun updateProductItemInList(toDomain: ProductInListDomain)
 }
